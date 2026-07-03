@@ -1,0 +1,15 @@
+1. Descomprime este ZIP en una carpeta temporal.
+2. Copia TODO su contenido dentro de tu proyecto actual NUBA_Reservas_Modular_GitHub.
+3. Acepta reemplazar archivos.
+4. NO borres la carpeta .git de tu proyecto existente.
+5. Abre index.html con Live Server.
+6. En Chrome usa Ctrl + Shift + R para limpiar cache.
+
+Archivos nuevos importantes:
+- pages/resenas.html
+- pages/proveedor-resenas.html
+- pages/admin-resenas.html
+- assets/js/reviews.js
+- assets/js/provider-reviews.js
+- assets/js/admin-reviews.js
+- assets/css/final-touches.css
