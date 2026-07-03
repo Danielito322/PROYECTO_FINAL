@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Reserva confirmada</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="bookings" data-root="../">
+  <main class="app-shell">
+<section class="page-content">
+  <div class="success-wrap"><div class="success-circle">✓</div><h2>¡Reserva confirmada!</h2><p>Tu espacio ya está separado. Presenta el QR al llegar para validar el ingreso.</p>
+    <div class="ticket"><div class="ticket-top"><small>RESERVA CONFIRMADA</small><strong id="ticket-name"></strong></div><div class="ticket-body"><div class="qr"><div class="qr-center">N</div></div><div class="ticket-row"><span>Código</span><b id="ticket-code"></b></div><div class="ticket-row"><span>Fecha</span><b id="ticket-date"></b></div><div class="ticket-row"><span>Horario</span><b id="ticket-time"></b></div><div class="ticket-row"><span>Total</span><b id="ticket-total"></b></div></div></div>
+    <a class="btn btn-primary btn-block" id="go-bookings" href="#">Ver mis reservas</a><a class="btn btn-secondary btn-block" id="go-home" href="#" style="margin-top:9px">Volver al inicio</a>
+  </div>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/confirmation.js"></script>
+</body>
+</html>

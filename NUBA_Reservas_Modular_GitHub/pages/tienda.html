@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Tienda</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="shop" data-root="../">
+  <main class="app-shell">
+<section class="page-content">
+  <header class="topbar"><div><div class="eyebrow">Complementa tu plan</div><h1>Tienda</h1><p>Productos seleccionados para tus reservas.</p></div><a class="icon-btn" href="carrito.html" aria-label="Carrito">🛒<i class="notify-dot hidden" data-cart-count></i></a></header>
+  <div class="hero" style="padding:18px"><div class="hero-content"><small>Productos destacados</small><h2 style="font-size:22px">Todo listo antes de salir.</h2><p>Agrega accesorios y recibe una compra simulada desde esta misma app.</p></div></div>
+  <div class="section-head"><h3>Categorías</h3><a class="text-link" href="carrito.html">Carrito <span data-cart-count class="hidden">0</span></a></div><div class="chips" id="shop-chips"></div>
+  <div class="section-head"><h3>Productos</h3><p>Entrega simulada</p></div><div class="product-grid" id="product-grid"></div>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/shop.js"></script>
+</body>
+</html>

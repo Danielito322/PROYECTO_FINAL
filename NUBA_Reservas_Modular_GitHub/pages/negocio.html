@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Modo negocio</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="profile" data-root="../">
+  <main class="app-shell">
+<section class="page-content">
+  <header class="topbar"><div><div class="eyebrow">Panel administrador</div><h1>Modo negocio</h1><p>Gestiona horarios, reservas y productos.</p></div><a class="icon-btn" href="perfil.html" aria-label="Volver al perfil">←</a></header>
+  <section class="owner-hero"><small>ARENA NORTE · RESUMEN DEL DÍA</small><h2>Todo bajo control.</h2><p>Revisa ingresos, próximos turnos y acciones pendientes desde un único panel.</p><div class="owner-stats"><div class="owner-stat"><strong>S/ 1,240</strong><span>Ingresos de hoy</span></div><div class="owner-stat"><strong>18</strong><span>Reservas activas</span></div></div></section>
+  <div class="section-head"><h3>Rendimiento semanal</h3><p>Reservas por día</p></div><div class="card"><div class="bar-chart" id="owner-chart"></div></div>
+  <div class="section-head"><h3>Acciones rápidas</h3></div><div class="menu-list"><button class="menu-row" data-owner-action="Horarios actualizados"><span class="menu-icon">◷</span><span><strong>Gestionar horarios</strong><span>Bloquea, abre o ajusta turnos</span></span><i>›</i></button><button class="menu-row" data-owner-action="QR validado"><span class="menu-icon">▦</span><span><strong>Validar QR</strong><span>Confirma el ingreso del cliente</span></span><i>›</i></button><button class="menu-row" data-owner-action="Inventario actualizado"><span class="menu-icon">◈</span><span><strong>Productos e inventario</strong><span>Gestiona stock y tienda</span></span><i>›</i></button><button class="menu-row" data-owner-action="Reporte generado"><span class="menu-icon">↗</span><span><strong>Ver reporte de ventas</strong><span>Resumen de ingresos y reservas</span></span><i>›</i></button></div>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/business.js"></script>
+</body>
+</html>

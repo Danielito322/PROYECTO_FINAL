@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Pago</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="bookings" data-root="../">
+  <main class="app-shell">
+<section class="page-content" style="padding-bottom:120px">
+  <header class="topbar"><div><div class="eyebrow">Paso 2 de 2</div><h1>Confirma y paga</h1><p>Revisa todo antes de finalizar.</p></div><a class="icon-btn" href="reservar.html" aria-label="Volver">←</a></header>
+  <div class="stepper"><span class="step active"></span><span class="step active"></span><span class="step active"></span></div>
+  <div id="payment-summary" class="summary-card"></div>
+  <div class="section-head"><h3>Método de pago</h3></div>
+  <div id="payment-methods"><button class="payment-method selected" data-method="Yape"><span class="method-logo">Y</span><span class="payment-copy"><strong>Yape</strong><span>Pago rápido desde tu celular</span></span><span class="radio"></span></button><button class="payment-method" data-method="Plin"><span class="method-logo">P</span><span class="payment-copy"><strong>Plin</strong><span>Confirma con tu número móvil</span></span><span class="radio"></span></button><button class="payment-method" data-method="Tarjeta"><span class="method-logo">▣</span><span class="payment-copy"><strong>Tarjeta</strong><span>Débito o crédito</span></span><span class="radio"></span></button></div>
+  <div class="form-group"><label class="form-label" id="payment-input-label">Número asociado a Yape</label><input class="field" id="payment-input" inputmode="numeric" placeholder="999 999 999"></div>
+  <div class="card"><div class="info-row"><div class="info-icon">🔒</div><div><strong>Pago protegido</strong><span>Esta pantalla es una simulación académica. No se cobra dinero real.</span></div></div></div>
+  <div style="margin-top:16px"><button class="btn btn-primary btn-block" id="confirm-payment">Confirmar reserva y pagar</button></div>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/payment.js"></script>
+</body>
+</html>

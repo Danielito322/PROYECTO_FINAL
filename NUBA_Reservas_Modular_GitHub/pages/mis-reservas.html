@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Mis reservas</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="bookings" data-root="../">
+  <main class="app-shell">
+<section class="page-content">
+  <header class="topbar"><div><div class="eyebrow">Organiza tu tiempo</div><h1>Mis reservas</h1><p>Próximas experiencias e historial.</p></div><a class="icon-btn" href="explorar.html" aria-label="Nueva reserva">＋</a></header>
+  <div class="chips"><button class="chip active">Próximas</button><button class="chip">Historial</button><button class="chip">Favoritos</button></div>
+  <div class="section-head"><h3>Reservas activas</h3><p>Con QR de ingreso</p></div><div id="booking-list"></div>
+  <div class="section-head"><h3>¿Buscas otro plan?</h3></div><a class="btn btn-secondary btn-block" href="explorar.html">Explorar lugares disponibles</a>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/bookings.js"></script>
+</body>
+</html>

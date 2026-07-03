@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Reservar</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="bookings" data-root="../">
+  <main class="app-shell">
+<section class="page-content" style="padding-bottom:178px">
+  <header class="topbar"><div><div class="eyebrow">Paso 1 de 2</div><h1>Configura tu reserva</h1><p>Fecha, horario y opciones adicionales.</p></div><a class="icon-btn" href="explorar.html" aria-label="Cerrar">×</a></header>
+  <div class="stepper"><span class="step active"></span><span class="step active"></span><span class="step"></span></div><p class="step-label">Selecciona fecha, horario y extras.</p>
+  <div class="booking-venue" id="booking-venue"></div>
+  <div class="section-head"><h3>Elige el día</h3></div><div class="week-grid" id="booking-days"></div>
+  <div class="section-head"><h3 id="time-date">Horario</h3></div><div class="time-tabs" id="time-tabs"><button class="time-tab active" data-segment="Mañana">Mañana</button><button class="time-tab" data-segment="Tarde">Tarde</button><button class="time-tab" data-segment="Noche">Noche</button></div><div class="time-grid" id="time-grid"></div><p id="selected-time" style="font-size:10px;color:var(--muted);font-weight:700;margin:9px 2px">Selecciona un horario disponible.</p>
+  <div class="section-head"><h3>Mejora tu experiencia</h3><p>Opcional</p></div><div id="extra-list"></div>
+</section>
+<div class="booking-footer"><div class="footer-inner"><div class="footer-price"><small>Total estimado</small><strong id="booking-total"></strong></div><button class="btn btn-primary" id="continue-booking">Continuar</button></div></div>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/app-shell.js"></script>
+  <script src="../assets/js/reservation.js"></script>
+</body>
+</html>

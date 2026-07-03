@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Reserva tu momento</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body data-page="home" data-root="">
+  <main class="app-shell">
+<section class="page-content">
+  <header class="topbar"><div><div class="eyebrow">Hola, Daniel</div><h1><span data-brand></span></h1><p>Encuentra espacios y servicios para tu próximo plan.</p></div><a class="icon-btn" href="pages/perfil.html" aria-label="Ir al perfil">☺</a></header>
+  <section class="hero"><div class="hero-content"><small>Reservas simples, momentos mejores</small><h2>Todo tu tiempo, bien elegido.</h2><p>Reserva canchas, mesas, servicios, entretenimiento y más desde un solo lugar.</p><div class="hero-chip">✦ Confirmación rápida · QR · pagos digitales</div></div></section>
+  <div class="section-head"><h3>¿Qué deseas reservar?</h3><a class="text-link" href="pages/explorar.html">Ver todo</a></div>
+  <div class="category-grid">
+    <button class="category-card" data-category="Canchas"><span>⚽</span>Canchas</button>
+    <button class="category-card" data-category="Restaurantes"><span>🍽️</span>Restaurantes</button>
+    <button class="category-card" data-category="Belleza"><span>✨</span>Belleza</button>
+    <button class="category-card" data-category="Entretenimiento"><span>🎬</span>Planes</button>
+  </div>
+  <div class="section-head"><h3>Acciones rápidas</h3></div>
+  <div class="home-quick">
+    <a class="quick-card" href="pages/explorar.html"><div class="quick-icon">⌕</div><strong>Explorar lugares</strong><span>Filtra por categoría y zona.</span></a>
+    <a class="quick-card" href="pages/mis-reservas.html"><div class="quick-icon">▣</div><strong>Mis reservas</strong><span>Revisa tus próximos planes.</span></a>
+    <a class="quick-card" href="pages/tienda.html"><div class="quick-icon">◈</div><strong>Tienda</strong><span>Productos para acompañar.</span></a>
+    <a class="quick-card" href="pages/negocio.html"><div class="quick-icon">▤</div><strong>Modo negocio</strong><span>Panel para administradores.</span></a>
+  </div>
+  <div class="section-head"><h3>Recomendado cerca de ti</h3><a class="text-link" href="pages/explorar.html">Explorar</a></div>
+  <div id="home-venues"></div>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/app-shell.js"></script>
+  <script src="assets/js/home.js"></script>
+</body>
+</html>
