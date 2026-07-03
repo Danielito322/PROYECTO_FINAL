@@ -1,0 +1,4 @@
+.DS_Store
+.vscode/
+# Mantener maps-config.js local si cambian a una clave propia
+assets/js/maps-config.local.js

@@ -1,0 +1,1 @@
+window.NUBA_MAPS={apiKey:'PEGA_AQUI_TU_API_KEY',mapId:'DEMO_MAP_ID'};

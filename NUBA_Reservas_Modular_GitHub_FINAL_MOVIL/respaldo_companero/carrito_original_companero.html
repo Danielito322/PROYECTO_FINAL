@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#6e5cf6">
+  <title>Carrito</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages.css">
+</head>
+<body data-page="shop" data-root="../">
+  <main class="app-shell">
+<section class="page-content" style="padding-bottom:120px">
+  <header class="topbar"><div><div class="eyebrow">Tu compra</div><h1>Carrito</h1><p>Revisa productos y cantidades.</p></div><a class="icon-btn" href="tienda.html" aria-label="Volver a tienda">←</a></header>
+  <div id="cart-list"></div>
+  <div class="summary-card" style="margin-top:16px"><div class="summary-line summary-total" style="border-top:0;margin-top:0;padding-top:0"><span>Total de productos</span><strong id="cart-total"></strong></div></div>
+  <button class="btn btn-primary btn-block" id="checkout-cart" style="margin-top:13px">Finalizar compra simulada</button>
+</section>
+</main>
+  <nav id="app-nav"></nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="payment-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="payment-title">
+      <div class="modal-handle"></div>
+      <div class="modal-title">
+        <h3 id="payment-title">Confirmar compra</h3>
+        <button class="close-modal" id="cancel-payment">✕</button>
+      </div>
+      <p style="margin:0 0 12px;color:var(--muted);font-size:12px">Selecciona el método de pago para finalizar la compra simulada.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+        <label class="card" style="display:flex;align-items:center;gap:10px"><input type="radio" name="payment-method" value="tarjeta" checked><div style="flex:1"><strong>Tarjeta</strong><div style="font-size:11px;color:var(--muted)">Pago con tarjeta (simulado)</div></div></label>
+        <label class="card" style="display:flex;align-items:center;gap:10px"><input type="radio" name="payment-method" value="yape"><div style="flex:1"><strong>Yape</strong><div style="font-size:11px;color:var(--muted)">Pago móvil vía Yape (simulado)</div></div></label>
+      </div>
+      <div style="margin-top:18px;display:flex;gap:10px"><button class="btn btn-secondary" id="cancel-payment-2">Cancelar</button><button class="btn btn-primary" id="confirm-payment">Pagar y finalizar</button></div>
+    </div>
+  </div>
+  <script src="../assets/js/config.js"></script><script src="../assets/js/data.js"></script><script src="../assets/js/storage.js"></script><script src="../assets/js/app-shell.js"></script><script src="../assets/js/cart.js"></script>
+</body></html>

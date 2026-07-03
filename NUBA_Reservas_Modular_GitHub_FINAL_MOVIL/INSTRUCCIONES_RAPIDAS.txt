@@ -1,0 +1,5 @@
+1. Descomprime este proyecto.
+2. Reemplaza el contenido de tu carpeta, pero NO borres .git.
+3. Abre index.html usando Live Server.
+4. Para ingresar, selecciona primero: Cliente / Proveedor / Administrador.
+5. Ctrl + Shift + R si ves estilos antiguos.
