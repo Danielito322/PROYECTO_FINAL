@@ -1,0 +1,7 @@
+NUBA MOBILE PREMIUM
+
+1) Abrir index.html con Live Server.
+2) Mantiene pages/carrito.html, confirmacion.html, detalle.html, explorar.html, mapa.html, mis-reservas.html, negocio.html, pago.html, perfil.html, reservar.html y tienda.html.
+3) Agrega pages/login.html, cuentas.html y admin.html.
+4) El mapa usa Google Maps y se centra en Puno. La clave se configuró en assets/js/config.js.
+5) Para probar cuenta proveedor: Perfil -> Cambiar tipo de cuenta -> Proveedor.

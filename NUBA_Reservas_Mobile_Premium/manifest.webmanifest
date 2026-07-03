@@ -1,0 +1,9 @@
+{
+  "name": "NUBA Reservas",
+  "short_name": "NUBA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a1018",
+  "theme_color": "#0a1018",
+  "description": "Reservas de deportes, belleza y entretenimiento en Puno."
+}
