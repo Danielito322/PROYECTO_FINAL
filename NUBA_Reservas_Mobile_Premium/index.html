@@ -1,2 +1,122 @@
-<!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#0a1018"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="manifest.webmanifest"><title>NUBA · Reserva tu momento</title><link rel="stylesheet" href="assets/css/base.css"><link rel="stylesheet" href="assets/css/components.css"><link rel="stylesheet" href="assets/css/pages.css"></head><body data-page="home" data-root=""><main class="app-shell"><section class="page-content"><header class="topbar"><div><div class="eyebrow">Puno · reservas simples</div><h1><span data-brand></span></h1><p>Elige un lugar, reserva tu momento y disfruta sin llamadas.</p></div><div class="topbar-actions"><a class="icon-btn" href="pages/cuentas.html" aria-label="Cuentas"><span data-icon-role></span></a><a class="icon-btn" href="pages/perfil.html" aria-label="Perfil"><span id="home-user-icon"></span></a></div></header><section class="hero"><small>Una app. Tus mejores planes.</small><h2>Reserva el tiempo que sí es para ti.</h2><p>Deportes, belleza y entretenimiento con disponibilidad, pago digital y confirmación QR.</p><div class="hero-chip">Servicio disponible en Puno</div></section><div class="section-head"><h3>¿Qué deseas reservar?</h3><a class="text-link" href="pages/explorar.html">Ver todo</a></div><div class="category-grid"><button class="category-card" data-category="deportes"><span class="category-visual" data-home-icon="sport"></span><strong>Deportes</strong><small>Canchas, gym y más</small></button><button class="category-card" data-category="belleza"><span class="category-visual" data-home-icon="beauty"></span><strong>Belleza</strong><small>Estilo y cuidado</small></button><button class="category-card" data-category="entretenimiento"><span class="category-visual" data-home-icon="entertainment"></span><strong>Entretenimiento</strong><small>Planes y experiencias</small></button></div><div class="section-head"><h3>Acciones rápidas</h3></div><div class="home-mini"><a class="mini-action card" href="pages/mapa.html"><span class="mini-icon" data-home-icon="pin"></span><strong>Mapa de Puno</strong><span>Ve locales disponibles cerca.</span></a><a class="mini-action card" href="pages/mis-reservas.html"><span class="mini-icon" data-home-icon="calendar"></span><strong>Mis reservas</strong><span>QR, historial y reprogramación.</span></a><a class="mini-action card" href="pages/cuentas.html"><span class="mini-icon" data-home-icon="users"></span><strong>Tipos de cuenta</strong><span>Cliente, proveedor y admin.</span></a><a class="mini-action card" href="pages/negocio.html"><span class="mini-icon" data-home-icon="store"></span><strong>Modo negocio</strong><span>Agenda, productos y QR.</span></a></div><div class="section-head"><h3>Recomendado cerca de ti</h3><a class="text-link" href="pages/explorar.html">Explorar</a></div><div id="home-venues"></div></section></main><nav id="app-nav"></nav><div id="toast" class="toast" role="status" aria-live="polite"></div><script src="assets/js/config.js"></script><script src="assets/js/nuba-core.js"></script><script src="assets/js/app-shell.js"></script><script src="assets/js/home.js"></script><script>document.querySelectorAll("[data-home-icon]").forEach(e=>e.innerHTML=NUBA.icon(e.dataset.homeIcon));document.getElementById("home-user-icon").innerHTML=NUBA.icon("user");document.querySelector("[data-icon-role]").innerHTML=NUBA.icon("users");</script></body></html>
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a1018">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.webmanifest">
+    <title>NUBA · Reserva tu momento</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+  </head>
+  <body data-page="home" data-root="">
+    <main class="app-shell">
+      <section class="page-content">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow">Puno · reservas simples</div>
+            <h1>
+              <span data-brand>
+              </span>
+            </h1>
+            <p>Elige un lugar, reserva tu momento y disfruta sin llamadas.</p>
+          </div>
+          <div class="topbar-actions">
+            <a class="icon-btn" href="pages/cuentas.html" aria-label="Cuentas">
+              <span data-icon-role>
+              </span>
+            </a>
+            <a class="icon-btn" href="pages/perfil.html" aria-label="Perfil">
+              <span id="home-user-icon">
+              </span>
+            </a>
+          </div>
+        </header>
+        <section class="hero">
+          <small>Una app. Tus mejores planes.</small>
+          <h2>Reserva el tiempo que sí es para ti.</h2>
+          <p>Deportes, belleza y entretenimiento con disponibilidad, pago digital y confirmación QR.</p>
+          <div class="hero-chip">Servicio disponible en Puno</div>
+        </section>
+        <div class="section-head">
+          <h3>¿Qué deseas reservar?</h3>
+          <a class="text-link" href="pages/explorar.html">Ver todo</a>
+        </div>
+        <div class="category-grid">
+          <button class="category-card" data-category="deportes">
+            <span class="category-visual" data-home-icon="sport">
+            </span>
+            <strong>Deportes</strong>
+            <small>Canchas, gym y más</small>
+          </button>
+          <button class="category-card" data-category="belleza">
+            <span class="category-visual" data-home-icon="beauty">
+            </span>
+            <strong>Belleza</strong>
+            <small>Estilo y cuidado</small>
+          </button>
+          <button class="category-card" data-category="entretenimiento">
+            <span class="category-visual" data-home-icon="entertainment">
+            </span>
+            <strong>Entretenimiento</strong>
+            <small>Planes y experiencias</small>
+          </button>
+        </div>
+        <div class="section-head">
+          <h3>Acciones rápidas</h3>
+        </div>
+        <div class="home-mini">
+          <a class="mini-action card" href="pages/mapa.html">
+            <span class="mini-icon" data-home-icon="pin">
+            </span>
+            <strong>Mapa de Puno</strong>
+            <span>Ve locales disponibles cerca.</span>
+          </a>
+          <a class="mini-action card" href="pages/mis-reservas.html">
+            <span class="mini-icon" data-home-icon="calendar">
+            </span>
+            <strong>Mis reservas</strong>
+            <span>QR, historial y reprogramación.</span>
+          </a>
+          <a class="mini-action card" href="pages/cuentas.html">
+            <span class="mini-icon" data-home-icon="users">
+            </span>
+            <strong>Tipos de cuenta</strong>
+            <span>Cliente, proveedor y admin.</span>
+          </a>
+          <a class="mini-action card" href="pages/negocio.html">
+            <span class="mini-icon" data-home-icon="store">
+            </span>
+            <strong>Modo negocio</strong>
+            <span>Agenda, productos y QR.</span>
+          </a>
+        </div>
+        <div class="section-head">
+          <h3>Recomendado cerca de ti</h3>
+          <a class="text-link" href="pages/explorar.html">Explorar</a>
+        </div>
+        <div id="home-venues">
+        </div>
+      </section>
+    </main>
+    <nav id="app-nav">
+    </nav>
+    <div id="toast" class="toast" role="status" aria-live="polite">
+    </div>
+    <script src="assets/js/config.js">
+    </script>
+    <script src="assets/js/nuba-core.js">
+    </script>
+    <script src="assets/js/app-shell.js">
+    </script>
+    <script src="assets/js/home.js">
+    </script>
+    <script>
+      document.querySelectorAll("[data-home-icon]").forEach(e=>
+      e.innerHTML=NUBA.icon(e.dataset.homeIcon));document.getElementById("home-user-icon").innerHTML=NUBA.icon("user");document.querySelector("[data-icon-role]").innerHTML=NUBA.icon("users");
+    </script>
+  </body>
+</html>
