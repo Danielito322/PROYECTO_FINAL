@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#112A1E" />
+  <title>CanchaGo | Reserva, juega y compra</title>
+  <style>
+    :root{
+      --ink:#11251b;
+      --ink-2:#1d3a2b;
+      --muted:#718178;
+      --paper:#ffffff;
+      --canvas:#f5f7f5;
+      --line:#e6ece7;
+      --green:#17a66b;
+      --green-2:#087f51;
+      --mint:#dff8e9;
+      --lime:#d5f6a6;
+      --blue:#5b8cf7;
+      --sky:#e7efff;
+      --orange:#f29c54;
+      --peach:#fff0df;
+      --violet:#8d6de2;
+      --lav:#f0ebff;
+      --pink:#f17fa9;
+      --danger:#e86065;
+      --shadow:0 18px 48px rgba(23,45,34,.13);
+      --shadow-sm:0 9px 23px rgba(23,45,34,.075);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 8% 12%, rgba(213,246,166,.7), transparent 24%),
+        radial-gradient(circle at 92% 84%, rgba(91,140,247,.16), transparent 28%),
+        linear-gradient(145deg,#eff8f1,#edf3ff);
+      overflow:hidden;
+    }
+    button,input,select,textarea{font:inherit}
+    button{border:0;cursor:pointer}
+    img{display:block;max-width:100%}
+    .stage{height:100%;display:grid;place-items:center;padding:18px}
+    .phone{width:min(100%,440px);height:min(100%,930px);background:var(--paper);border:8px solid #132018;border-radius:34px;overflow:hidden;box-shadow:0 30px 82px rgba(16,31,23,.3);position:relative}
+    .status{height:29px;background:#fcfffc;padding:0 18px;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.1px;position:relative;z-index:100}
+    .signal{display:flex;align-items:center;gap:7px;font-size:12px}
+    .app{height:calc(100% - 29px);background:var(--canvas);position:relative;overflow:hidden}
+    .page{display:none;position:absolute;inset:0;overflow-y:auto;padding:18px 17px 104px;scrollbar-width:none;animation:page-in .25s ease}
+    .page::-webkit-scrollbar{display:none}.page.active{display:block}
+    @keyframes page-in{from{opacity:.08;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .title{font-size:22px;font-weight:950;letter-spacing:-.72px;line-height:1.03}.subtitle{color:var(--muted);font-size:11px;font-weight:650;line-height:1.4;margin-top:4px}
+    .icon-btn{width:43px;height:43px;border-radius:15px;background:#fff;box-shadow:var(--shadow-sm);display:grid;place-items:center;font-size:18px;color:var(--ink);position:relative}.icon-btn:active{transform:scale(.96)}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--danger);position:absolute;right:9px;top:9px;border:2px solid #fff}
+    .back{width:42px;height:42px;border-radius:14px;background:#fff;box-shadow:var(--shadow-sm);font-size:20px;color:var(--ink)}
+    .section{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:22px 1px 11px}.section h3{font-size:16px;letter-spacing:-.28px;margin:0}.link{padding:0;background:transparent;color:var(--green-2);font-size:11px;font-weight:950}
+    .hero{min-height:213px;border-radius:28px;padding:20px;overflow:hidden;position:relative;color:#fff;box-shadow:var(--shadow);background:#0d5338}
+    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,rgba(7,44,29,.89),rgba(11,71,47,.48),rgba(7,36,25,.12));z-index:1}.hero::after{content:"";position:absolute;width:185px;height:185px;border-radius:50%;background:rgba(213,246,166,.22);right:-64px;bottom:-88px;z-index:2}.hero .hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero-content{position:relative;z-index:3}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.55px;opacity:.86}.hero h1{font-size:26px;line-height:1.05;letter-spacing:-.9px;max-width:254px;margin:8px 0 8px}.hero p{font-size:11.5px;line-height:1.45;margin:0;max-width:245px;color:rgba(255,255,255,.84)}
+    .hero-actions{display:flex;gap:9px;position:relative;z-index:3;margin-top:16px}.hero-cta{background:#fff;color:var(--ink);border-radius:13px;padding:10px 12px;font-size:10px;font-weight:950}.hero-ghost{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:13px;padding:10px 12px;font-size:10px;font-weight:900}
+    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{min-height:86px;padding:10px 5px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm);text-align:center;color:var(--ink);font-size:9px;line-height:1.18;font-weight:900}.quick .quick-icon{width:39px;height:39px;border-radius:14px;display:grid;place-items:center;font-size:19px;margin:0 auto 6px;background:var(--mint)}.quick:nth-child(2) .quick-icon{background:var(--peach)}.quick:nth-child(3) .quick-icon{background:var(--sky)}.quick:nth-child(4) .quick-icon{background:var(--lav)}
+    .search{height:48px;display:flex;align-items:center;gap:9px;padding:0 13px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 5px 16px rgba(29,54,40,.04)}.search input{border:0;outline:0;min-width:0;flex:1;background:transparent;color:var(--ink);font-size:12px}
+    .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{white-space:nowrap;background:#fff;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}.chip.green{background:var(--green);color:#fff;border-color:var(--green)}
+    .booking-glance{position:relative;overflow:hidden;background:linear-gradient(135deg,#e4f9ea,#dceefe);border:1px solid rgba(23,166,107,.12);border-radius:22px;padding:14px;display:flex;align-items:center;gap:12px}.booking-glance::after{content:"";width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.48);position:absolute;right:-44px;top:-45px}.calendar-icon{width:48px;height:48px;border-radius:15px;background:#fff;color:var(--green-2);display:grid;place-items:center;font-size:24px;box-shadow:var(--shadow-sm);flex:0 0 auto}.booking-glance strong{font-size:12px;display:block}.booking-glance p{font-size:10px;color:var(--muted);margin:4px 0 0;font-weight:650;line-height:1.35}.booking-glance .mini-go{position:absolute;right:14px;bottom:13px;background:#fff;border-radius:11px;color:var(--green-2);font-size:14px;width:32px;height:32px;box-shadow:var(--shadow-sm)}
+    .venue-list{display:grid;gap:12px}.venue-card{background:#fff;border:1px solid var(--line);border-radius:23px;overflow:hidden;box-shadow:var(--shadow-sm)}.venue-cover{height:132px;position:relative;overflow:hidden;background:#163b2a}.venue-cover img{width:100%;height:100%;object-fit:cover}.venue-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,25,17,.02),rgba(7,25,17,.45))}.venue-badge{position:absolute;z-index:2;left:10px;top:10px;background:rgba(255,255,255,.93);border-radius:11px;padding:6px 8px;font-size:9px;font-weight:950}.fav{position:absolute;z-index:2;right:10px;top:10px;width:34px;height:34px;border-radius:12px;background:rgba(255,255,255,.94);font-size:17px}.venue-body{padding:12px}.venue-title-row{display:flex;align-items:start;justify-content:space-between;gap:10px}.venue-title-row h4{margin:0;font-size:14px;letter-spacing:-.22px;line-height:1.18}.venue-title-row p{margin:5px 0 0;font-size:10px;color:var(--muted);font-weight:650}.rating{font-size:10px;font-weight:900;background:#fff4d9;color:#9b620b;border-radius:10px;padding:6px 7px;white-space:nowrap}.features{display:flex;gap:6px;flex-wrap:wrap;margin:11px 0}.feature{font-size:9px;font-weight:850;color:#66756c;background:#f2f6f3;border-radius:9px;padding:6px 7px}.venue-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;gap:10px}.price{font-size:12px;font-weight:950}.price span{font-size:9px;color:var(--muted);font-weight:700}.btn-sm{border-radius:11px;padding:9px 11px;background:var(--ink);color:#fff;font-size:10px;font-weight:950}.btn-sm.green{background:var(--green-2)}
+    .bottom-nav{position:absolute;left:0;right:0;bottom:0;z-index:60;height:78px;background:rgba(255,255,255,.97);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 5px 9px}.nav{background:transparent;color:#819087;font-size:9px;font-weight:850;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:14px}.nav .ni{font-size:20px;line-height:1}.nav.active{color:var(--green-2)}
+    .fab{position:absolute;right:18px;bottom:88px;z-index:58;width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,var(--green),var(--green-2));color:#fff;font-size:26px;box-shadow:0 14px 31px rgba(23,166,107,.31)}.fab.hide{display:none}
+    .map{height:205px;border-radius:25px;overflow:hidden;position:relative;background:linear-gradient(37deg,transparent 44%,rgba(255,255,255,.72) 44.4%,rgba(255,255,255,.72) 47.1%,transparent 47.5%),linear-gradient(132deg,transparent 55%,rgba(255,255,255,.72) 55.4%,rgba(255,255,255,.72) 58.1%,transparent 58.5%),radial-gradient(circle at 14% 23%,rgba(255,255,255,.75) 0 3px,transparent 4px),radial-gradient(circle at 76% 64%,rgba(255,255,255,.75) 0 4px,transparent 5px),linear-gradient(125deg,#c9e9bb,#afe0ca 43%,#b9deeb 44%,#dbeaca 68%,#c9e3bc);box-shadow:var(--shadow-sm)}.map-label{position:absolute;top:14px;left:14px;z-index:2;background:rgba(255,255,255,.94);border-radius:12px;padding:8px 10px;font-size:10px;font-weight:900;box-shadow:var(--shadow-sm)}.marker{position:absolute;width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;background:var(--green);border:3px solid rgba(255,255,255,.9);box-shadow:0 6px 13px rgba(18,55,34,.2);color:#fff;z-index:3}.marker span{transform:rotate(45deg)}.marker.blue{background:var(--blue)}.marker.orange{background:var(--orange)}.marker.purple{background:var(--violet)}.map-tools{position:absolute;right:12px;bottom:12px;z-index:4;display:grid;gap:7px}.map-tools button{width:35px;height:35px;border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);font-size:16px}
+    .map-panel{margin-top:-18px;position:relative;z-index:5;background:#fff;border:1px solid var(--line);border-radius:20px;padding:13px;box-shadow:var(--shadow-sm)}.map-panel strong{font-size:12px;display:block}.map-panel p{margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.4;font-weight:650}
+    .detail-hero{height:246px;border-radius:26px;overflow:hidden;position:relative;background:#143c2b}.detail-hero img{width:100%;height:100%;object-fit:cover}.detail-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,19,12,.05),rgba(3,19,12,.72))}.overlay-top{position:absolute;z-index:3;left:13px;right:13px;top:13px;display:flex;justify-content:space-between}.overlay-top button{width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.92);font-size:18px}.detail-copy{position:absolute;left:15px;bottom:15px;right:15px;z-index:3;color:#fff}.detail-copy h2{margin:0;font-size:21px;line-height:1.08;letter-spacing:-.55px}.detail-copy p{margin:5px 0 0;font-size:10px;color:rgba(255,255,255,.85);font-weight:650}.detail-pills{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}.detail-pills span{font-size:9px;font-weight:850;padding:6px 7px;border-radius:9px;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.18)}
+    .info-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:13px;margin-top:12px}.info-card h4{font-size:13px;margin:0 0 8px}.info-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}.amenities{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.amenity{border-radius:15px;background:#f5f8f5;padding:10px 7px;text-align:center;font-size:9px;font-weight:850;color:#506057}.amenity span{display:block;font-size:19px;margin-bottom:5px}.review{padding:11px 0;border-top:1px solid var(--line)}.review:first-of-type{border-top:0}.review strong{font-size:11px}.review p{font-size:10px;margin:4px 0 0}.sticky-action{position:absolute;left:0;right:0;bottom:0;z-index:55;padding:12px 17px 15px;background:rgba(255,255,255,.97);border-top:1px solid var(--line);display:flex;gap:9px;align-items:center}.sticky-price{min-width:92px}.sticky-price b{font-size:14px;display:block}.sticky-price span{font-size:9px;color:var(--muted);font-weight:700}.primary{flex:1;background:linear-gradient(135deg,var(--green),var(--green-2));color:#fff;border-radius:15px;padding:14px;font-size:12px;font-weight:950;box-shadow:0 10px 21px rgba(23,166,107,.23)}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:15px;padding:13px;font-size:12px;font-weight:900;width:100%}.primary:active,.secondary:active,.btn-sm:active{transform:scale(.985)}
+    .step-head{display:flex;align-items:center;gap:8px;margin:2px 0 16px}.step-back{width:40px;height:40px;border-radius:14px;background:#fff;box-shadow:var(--shadow-sm);font-size:19px}.step-head strong{font-size:16px;display:block;letter-spacing:-.25px}.step-head span{font-size:10px;color:var(--muted);font-weight:650;display:block;margin-top:2px}.progress{height:7px;background:#e8eee9;border-radius:999px;overflow:hidden;margin:0 0 17px}.progress span{height:100%;background:linear-gradient(90deg,var(--green),#64d69d);display:block;border-radius:999px;transition:.25s}.step-label{font-size:10px;font-weight:900;color:var(--green-2);background:var(--mint);display:inline-block;padding:7px 9px;border-radius:999px;margin-bottom:11px}.booking-title{font-size:22px;letter-spacing:-.62px;line-height:1.1;margin:0}.booking-sub{font-size:11px;color:var(--muted);line-height:1.45;margin:6px 0 0}.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:17px}.day-card{min-height:72px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 2px;text-align:center;font-size:9px;font-weight:900;color:var(--muted)}.day-card b{color:var(--ink);font-size:15px;display:block;margin:5px 0}.day-card.active{background:var(--ink);border-color:var(--ink);color:#fff}.day-card.active b{color:#fff}.day-card:disabled{opacity:.35;cursor:not-allowed}.calendar-box{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:21px;padding:13px}.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.cal-head strong{font-size:12px}.cal-head button{width:29px;height:29px;border-radius:10px;background:#f2f6f3}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.calendar-grid .dow{font-size:8px;color:var(--muted);font-weight:850;padding-bottom:3px}.calendar-grid button{height:31px;border-radius:10px;background:transparent;font-size:10px;font-weight:800;color:var(--ink)}.calendar-grid button.today{color:var(--green-2);background:var(--mint)}.calendar-grid button.selected{background:var(--green);color:#fff}.calendar-grid button.disabled{color:#c9d2cc;pointer-events:none}.helper{display:flex;gap:9px;background:#fff9ea;border:1px solid #f1dfa7;border-radius:15px;padding:10px;margin-top:12px;font-size:10px;color:#816c41;line-height:1.4;font-weight:700}.helper b{font-size:15px}
+    .time-segment{display:flex;gap:8px;background:#e9efea;border-radius:13px;padding:4px;margin:14px 0}.time-segment button{flex:1;background:transparent;border-radius:10px;padding:8px;font-size:10px;font-weight:900;color:var(--muted)}.time-segment button.active{background:#fff;color:var(--ink);box-shadow:0 3px 9px rgba(20,40,28,.06)}.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.time{padding:11px 5px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--ink);font-size:11px;font-weight:900}.time small{display:block;color:var(--muted);font-size:8px;margin-top:3px}.time.selected{border-color:var(--green);background:#effcf4;box-shadow:inset 0 0 0 1px var(--green);color:var(--green-2)}.time.unavailable{color:#aab4ad;background:#f5f7f5;pointer-events:none;text-decoration:line-through}.selection-summary{background:linear-gradient(135deg,#eefaf2,#e9f2ff);border-radius:18px;border:1px solid rgba(23,166,107,.12);padding:12px;margin-top:15px}.selection-summary strong{font-size:11px;display:block}.selection-summary p{font-size:10px;color:var(--muted);margin:4px 0 0;font-weight:650}
+    .extra-list{display:grid;gap:9px;margin-top:16px}.extra{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:11px;text-align:left}.extra .extra-icon{height:42px;width:42px;border-radius:14px;display:grid;place-items:center;background:var(--mint);font-size:20px}.extra:nth-child(2) .extra-icon{background:var(--peach)}.extra:nth-child(3) .extra-icon{background:var(--sky)}.extra:nth-child(4) .extra-icon{background:var(--lav)}.extra strong{font-size:11px;display:block}.extra span{font-size:9px;color:var(--muted);display:block;margin-top:3px;font-weight:650}.check{margin-left:auto;width:24px;height:24px;border:1.5px solid #c7d3cb;border-radius:8px;background:#fff;font-size:14px;color:#fff}.extra.selected .check{background:var(--green);border-color:var(--green)}.extra.selected{border-color:#bfe7ce;background:#fbfffc}
+    .summary-card{background:#fff;border:1px solid var(--line);border-radius:21px;padding:14px}.summary-top{display:flex;gap:11px;align-items:center}.summary-img{width:62px;height:62px;border-radius:16px;overflow:hidden;flex:0 0 auto}.summary-img img{width:100%;height:100%;object-fit:cover}.summary-top strong{font-size:13px;display:block}.summary-top p{font-size:10px;color:var(--muted);margin:3px 0 0;font-weight:650;line-height:1.35}.summary-row{display:flex;justify-content:space-between;gap:8px;padding:11px 0;border-top:1px solid var(--line);font-size:10px;color:var(--muted);font-weight:700}.summary-row strong{font-size:10px;color:var(--ink);text-align:right}.summary-row.total{padding-bottom:0}.summary-row.total b{color:var(--green-2);font-size:15px}.promo-input{display:flex;gap:8px;margin-top:12px}.promo-input input{flex:1;background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px;font-size:10px;outline:0}.promo-input button{background:#eff7f1;color:var(--green-2);border-radius:13px;padding:0 13px;font-size:10px;font-weight:950}
+    .pay-method{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px;margin-top:9px;text-align:left;width:100%}.pay-method .pay-logo{height:38px;width:46px;border-radius:12px;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:950;background:linear-gradient(135deg,#6f3bea,#9e72f0)}.pay-method:nth-of-type(2) .pay-logo{background:linear-gradient(135deg,#15aef2,#1477d5)}.pay-method:nth-of-type(3) .pay-logo{background:linear-gradient(135deg,#263a93,#0f69b7)}.pay-method strong{font-size:11px;display:block}.pay-method span{font-size:9px;color:var(--muted);font-weight:650;display:block;margin-top:3px}.radio{margin-left:auto;width:21px;height:21px;border:1.5px solid #c6d1cb;border-radius:50%;display:grid;place-items:center}.pay-method.selected{border-color:#93d9b0;background:#fbfffc}.pay-method.selected .radio:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--green)}.form-card{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:19px;padding:13px}.field-label{font-size:10px;font-weight:900;display:block;margin:0 0 6px}.field{width:100%;border:1px solid var(--line);background:#fbfdfb;border-radius:12px;padding:11px;font-size:10px;outline:0;color:var(--ink)}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.secure{display:flex;gap:8px;font-size:9px;font-weight:700;color:var(--muted);line-height:1.35;margin-top:12px}.secure b{font-size:14px;color:var(--green-2)}
+    .success{background:linear-gradient(155deg,#eefcf3,#ebf1ff);min-height:100%;padding:20px 17px 95px;text-align:center}.success-badge{width:87px;height:87px;border-radius:30px;background:linear-gradient(135deg,#18b474,#0f8154);color:#fff;display:grid;place-items:center;font-size:39px;margin:31px auto 15px;box-shadow:0 17px 32px rgba(23,166,107,.29)}.success h1{font-size:25px;letter-spacing:-.7px;margin:0 0 7px}.success p{font-size:11px;color:var(--muted);line-height:1.45;margin:0 auto;max-width:272px}.ticket{margin:21px 0;background:#fff;border-radius:23px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-sm);text-align:left}.ticket-top{padding:15px;display:flex;align-items:center;gap:11px}.ticket-logo{width:44px;height:44px;background:var(--mint);border-radius:14px;display:grid;place-items:center;font-size:22px}.ticket-top strong{font-size:12px;display:block}.ticket-top span{font-size:9px;color:var(--muted);display:block;margin-top:3px;font-weight:700}.ticket-cut{border-top:2px dashed #dfe6e1;position:relative}.ticket-cut::before,.ticket-cut::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:#eef6f0;top:-10px}.ticket-cut::before{left:-9px}.ticket-cut::after{right:-9px}.ticket-bottom{padding:15px;display:flex;gap:13px;align-items:center}.qr{width:78px;height:78px;border-radius:12px;background:repeating-linear-gradient(90deg,#1b2d22 0 5px,#fff 5px 10px),repeating-linear-gradient(#1b2d22 0 5px,#fff 5px 10px);background-blend-mode:multiply;position:relative;overflow:hidden}.qr::after{content:"✦";position:absolute;inset:24px;background:var(--green);border:3px solid #fff;border-radius:8px;color:#fff;display:grid;place-items:center;font-size:15px}.ticket-meta{display:grid;gap:7px;flex:1}.ticket-meta div{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:var(--muted);font-weight:700}.ticket-meta b{color:var(--ink);font-size:10px;text-align:right}.share-row{display:flex;gap:9px}.share-row button{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;font-size:10px;font-weight:900;color:var(--ink)}
+    .shop-hero{height:166px;border-radius:25px;overflow:hidden;position:relative;background:#14271e;color:#fff}.shop-hero img{width:100%;height:100%;object-fit:cover}.shop-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,24,16,.9),rgba(6,24,16,.15))}.shop-copy{position:absolute;z-index:2;left:17px;bottom:16px;max-width:230px}.shop-copy span{font-size:9px;font-weight:900;letter-spacing:.5px;color:#dbfbb0}.shop-copy h2{font-size:22px;line-height:1.05;letter-spacing:-.6px;margin:6px 0}.shop-copy p{font-size:10px;line-height:1.38;margin:0;color:rgba(255,255,255,.84)}
+    .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.product{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-sm);text-align:left}.product-img{height:123px;background:#edf5ef;position:relative;overflow:hidden}.product-img img{width:100%;height:100%;object-fit:cover}.product-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(4,20,12,.1))}.sale{position:absolute;top:8px;left:8px;z-index:2;background:#fff4dd;color:#9d6112;border-radius:9px;padding:5px 6px;font-size:8px;font-weight:950}.product-body{padding:10px}.product h4{font-size:11px;line-height:1.2;margin:0}.product p{font-size:9px;color:var(--muted);font-weight:650;line-height:1.3;margin:5px 0 0}.product-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px}.add{height:29px;width:29px;border-radius:10px;background:var(--ink);color:#fff;font-size:18px}.product-price{font-size:11px;font-weight:950}.product-price span{font-size:8px;color:var(--muted);font-weight:700;text-decoration:line-through;margin-left:3px}
+    .product-detail-img{height:290px;border-radius:25px;overflow:hidden;background:#eef5ef;position:relative}.product-detail-img img{width:100%;height:100%;object-fit:cover}.product-detail-img .back{position:absolute;top:13px;left:13px;z-index:2}.product-detail-img .fav{top:13px;right:13px;z-index:2}.thumb-row{display:flex;gap:8px;margin-top:10px}.thumb{width:54px;height:54px;border-radius:13px;overflow:hidden;border:2px solid transparent}.thumb.active{border-color:var(--green)}.thumb img{height:100%;width:100%;object-fit:cover}.prod-detail h1{font-size:21px;letter-spacing:-.55px;margin:16px 0 6px}.prod-detail p{font-size:11px;line-height:1.5;color:var(--muted);margin:0}.stars{font-size:10px;color:#d48e17;font-weight:900;margin:10px 0}.size-row{display:flex;gap:8px;margin-top:9px}.size{width:43px;height:37px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:10px;font-weight:900}.size.active{background:var(--ink);color:#fff;border-color:var(--ink)}.quantity{display:flex;align-items:center;gap:10px;margin:16px 0}.quantity button{width:32px;height:32px;border-radius:11px;background:#fff;border:1px solid var(--line);font-weight:950}.quantity b{font-size:13px}.product-sticky{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:12px 17px 15px;display:flex;gap:8px;align-items:center;z-index:55}.product-sticky strong{font-size:15px;min-width:85px}.product-sticky .primary{padding:13px}
+    .cart-item{display:flex;gap:11px;padding:11px;background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:10px}.cart-thumb{width:68px;height:68px;border-radius:15px;overflow:hidden;flex:0 0 auto}.cart-thumb img{width:100%;height:100%;object-fit:cover}.cart-info{flex:1;min-width:0}.cart-info strong{font-size:11px;display:block;line-height:1.22}.cart-info span{font-size:9px;color:var(--muted);font-weight:650;display:block;margin-top:4px}.qty-row{display:flex;align-items:center;justify-content:space-between;margin-top:9px}.counter{display:flex;align-items:center;gap:7px}.counter button{width:23px;height:23px;border-radius:8px;background:#eff4f0;font-weight:950}.counter b{font-size:10px}.remove{background:transparent;color:var(--danger);font-size:9px;font-weight:900;padding:0}.cart-price{font-size:11px;font-weight:950;align-self:flex-start}.cart-total{background:#fff;border:1px solid var(--line);border-radius:20px;padding:13px;margin-top:13px}.cart-total .line{display:flex;justify-content:space-between;padding:8px 0;font-size:10px;color:var(--muted);font-weight:700}.cart-total .line.total{border-top:1px solid var(--line);padding-bottom:1px;margin-top:4px}.cart-total .line.total b{font-size:15px;color:var(--ink)}
+    .booking-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:12px;margin-bottom:10px}.booking-head{display:flex;gap:10px;align-items:start}.booking-logo{width:45px;height:45px;border-radius:14px;background:var(--mint);display:grid;place-items:center;font-size:22px}.booking-head strong{font-size:12px;display:block}.booking-head p{font-size:9px;color:var(--muted);font-weight:650;margin:3px 0 0}.status-chip{margin-left:auto;padding:6px 7px;border-radius:9px;font-size:9px;font-weight:950;background:var(--mint);color:var(--green-2);white-space:nowrap}.status-chip.past{background:#f1f3f1;color:#7f8982}.booking-detail{margin-top:10px;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}.booking-detail div{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-weight:700}.booking-detail b{font-size:10px;color:var(--ink);text-align:right}.booking-actions{display:flex;gap:8px;margin-top:10px}.booking-actions button{flex:1;padding:10px;border-radius:11px;background:#eff7f1;color:var(--green-2);font-size:9px;font-weight:950}.booking-actions button:last-child{background:#f4f6f4;color:#5f6b63}
+    .profile{background:linear-gradient(155deg,#e5f8e9,#e6f0ff);padding:19px;text-align:center;border-radius:26px}.avatar{width:78px;height:78px;border-radius:50%;margin:0 auto 9px;border:4px solid #fff;background:linear-gradient(135deg,#19a66c,#55c391);box-shadow:var(--shadow-sm);color:#fff;display:grid;place-items:center;font-size:27px;font-weight:950}.profile h2{font-size:19px;margin:0}.profile p{font-size:10px;color:var(--muted);font-weight:700;margin:5px 0 11px}.pill{display:inline-block;background:#fff;border:1px solid rgba(23,166,107,.12);border-radius:999px;padding:7px 9px;font-size:9px;font-weight:900;margin:2px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{padding:10px 5px;background:#fff;border:1px solid var(--line);border-radius:15px}.stat strong{font-size:14px;display:block}.stat span{font-size:8px;color:var(--muted);font-weight:750}.menu{display:grid;gap:8px}.menu button{width:100%;background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px;display:flex;align-items:center;gap:10px;text-align:left}.menu-icon{height:34px;width:34px;border-radius:11px;background:var(--mint);display:grid;place-items:center;font-size:16px}.menu button:nth-child(2) .menu-icon{background:var(--sky)}.menu button:nth-child(3) .menu-icon{background:var(--peach)}.menu button:nth-child(4) .menu-icon{background:var(--lav)}.menu strong{font-size:11px;display:block}.menu span{font-size:9px;color:var(--muted);font-weight:650;display:block;margin-top:2px}.arrow{margin-left:auto;color:var(--muted);font-size:19px}
+    .owner-hero{background:linear-gradient(135deg,#152740,#3d5182);border-radius:25px;color:#fff;padding:17px;box-shadow:var(--shadow)}.owner-hero small{font-size:9px;opacity:.8;font-weight:900;letter-spacing:.4px}.owner-hero h2{font-size:21px;letter-spacing:-.55px;margin:5px 0}.owner-hero p{font-size:10px;line-height:1.4;margin:0;color:rgba(255,255,255,.78)}.owner-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:13px}.owner-stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:10px}.owner-stat strong{font-size:17px;display:block}.owner-stat span{font-size:9px;opacity:.8;font-weight:700}.chart{display:flex;align-items:end;height:135px;gap:9px;background:#fff;border:1px solid var(--line);border-radius:21px;padding:13px}.bar{flex:1;min-width:10px;background:linear-gradient(#68d7a8,#169d66);border-radius:7px 7px 3px 3px;position:relative}.bar small{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--muted);font-weight:800}.owner-list{display:grid;gap:8px}.owner-row{background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px;display:flex;align-items:center;gap:9px}.owner-row .owner-icon{height:35px;width:35px;border-radius:11px;background:var(--sky);display:grid;place-items:center;font-size:17px}.owner-row strong{font-size:11px;display:block}.owner-row span{font-size:9px;color:var(--muted);font-weight:650;display:block;margin-top:2px}.owner-row b{margin-left:auto;font-size:11px}.toggle{margin-left:auto;width:40px;height:22px;border-radius:99px;background:#dbe4dd;padding:3px}.toggle i{height:16px;width:16px;border-radius:50%;background:#fff;display:block;transition:.2s}.toggle.on{background:var(--green)}.toggle.on i{transform:translateX(18px)}
+    .modal-cover{position:absolute;inset:0;z-index:170;display:none;align-items:end;background:rgba(8,21,14,.5);backdrop-filter:blur(3px);padding:20px}.modal-cover.show{display:flex}.modal{width:100%;max-height:88%;overflow:auto;scrollbar-width:none;border-radius:26px 26px 20px 20px;background:#fff;padding:18px;box-shadow:0 -12px 45px rgba(6,20,12,.25);animation:modal-in .25s ease}.modal::-webkit-scrollbar{display:none}@keyframes modal-in{from{transform:translateY(37px);opacity:.35}to{transform:none;opacity:1}}.handle{width:42px;height:5px;background:#dce4df;border-radius:99px;margin:0 auto 14px}.modal-title{display:flex;align-items:center;justify-content:space-between;gap:11px;margin-bottom:13px}.modal-title h3{font-size:17px;letter-spacing:-.35px;margin:0}.close{width:33px;height:33px;border-radius:11px;background:#f0f4f1;color:var(--muted);font-size:17px}.notice{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.notice:last-child{border-bottom:0}.notice-icon{height:36px;width:36px;border-radius:12px;background:var(--mint);display:grid;place-items:center;font-size:17px}.notice strong{font-size:11px;display:block}.notice p{font-size:9.5px;line-height:1.38;color:var(--muted);font-weight:650;margin:3px 0 0}.modal-helper{font-size:10px;color:var(--muted);line-height:1.45;margin:0 0 12px}.empty{background:#fff;border:1px dashed #cbd8d0;border-radius:19px;padding:25px;text-align:center;color:var(--muted);font-size:11px;line-height:1.45;font-weight:700}.toast{position:absolute;bottom:87px;left:50%;z-index:220;transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:.25s;background:#182c20;color:#fff;border-radius:13px;padding:10px 13px;font-size:10px;font-weight:850;box-shadow:var(--shadow);white-space:nowrap}.toast.show{transform:translate(-50%,0);opacity:1}
+    .onboarding{position:absolute;z-index:230;inset:0;background:linear-gradient(160deg,#e9f9ef,#e5ebff);display:flex;flex-direction:column;justify-content:space-between;padding:34px 24px 27px}.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.8px}.brand-mark{width:43px;height:43px;border-radius:15px;background:linear-gradient(135deg,var(--green),var(--green-2));color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 10px 22px rgba(23,166,107,.25)}.intro-visual{height:292px;position:relative}.orb{width:238px;height:238px;border-radius:50%;background:#ccf2b5;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:inset 0 0 0 17px rgba(255,255,255,.34)}.sport-ball{position:absolute;width:115px;height:115px;border-radius:50%;background:linear-gradient(135deg,#fff,#e8efeb);box-shadow:0 16px 30px rgba(14,38,23,.16);display:grid;place-items:center;font-size:58px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-13deg)}.float{position:absolute;background:#fff;box-shadow:var(--shadow);border-radius:18px;padding:10px;display:flex;align-items:center;gap:8px;font-size:10px;font-weight:900}.float b{height:33px;width:33px;border-radius:11px;background:var(--peach);display:grid;place-items:center;font-size:17px}.float.one{top:27px;left:0;transform:rotate(-8deg)}.float.two{bottom:39px;right:0;transform:rotate(7deg)}.float.two b{background:var(--sky)}.onboarding h1{font-size:30px;line-height:1.04;letter-spacing:-1px;margin:0 0 10px}.onboarding p{font-size:13px;line-height:1.52;color:var(--muted);margin:0 0 18px}.dots{display:flex;gap:6px;margin-bottom:15px}.dots i{height:7px;width:7px;border-radius:99px;background:#bdc9c1}.dots i.active{width:22px;background:var(--green)}.enter{width:100%;padding:15px;border-radius:16px;background:var(--ink);color:#fff;font-size:13px;font-weight:950}.login{position:absolute;z-index:231;inset:0;display:none;background:#f5f8f5;padding:34px 23px 27px}.login.show{display:block}.login h1{font-size:27px;letter-spacing:-.8px;margin:36px 0 8px}.login p{font-size:12px;color:var(--muted);line-height:1.45;margin:0 0 24px}.stack{display:grid;gap:10px}.divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:10px;font-weight:800;margin:13px 0}.divider::before,.divider::after{content:"";height:1px;background:var(--line);flex:1}
+    .hidden{display:none!important}
+    @media(max-width:500px){body{background:#fff}.stage{padding:0}.phone{height:100%;width:100%;border:0;border-radius:0;box-shadow:none}}
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="phone">
+      <div class="status"><span>9:41</span><span class="signal">▮▮▮ &nbsp; ◔ &nbsp; ▰</span></div>
+      <main class="app" id="app">
+
+        <section class="page active" id="page-home">
+          <header class="topbar">
+            <div><div class="title">Hola, Daniel 👋</div><div class="subtitle">Encuentra tu próximo partido en Puno.</div></div>
+            <button class="icon-btn" data-modal="notifications" aria-label="Abrir notificaciones">🔔<i class="dot"></i></button>
+          </header>
+          <article class="hero">
+            <img class="hero-image" src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1500&q=82" alt="Cancha de fútbol iluminada" />
+            <div class="hero-content">
+              <div class="eyebrow">TU DEPORTE, EN UN SOLO LUGAR</div>
+              <h1>Reserva tu cancha ideal en minutos.</h1>
+              <p>Compara horarios, paga seguro, invita a tu equipo y llega con tu QR listo.</p>
+            </div>
+            <div class="hero-actions"><button class="hero-cta" data-nav="explore">Buscar una cancha</button><button class="hero-ghost" data-nav="bookings">Mis reservas</button></div>
+          </article>
+
+          <div class="section"><h3>Todo para jugar</h3><button class="link" data-nav="explore">Explorar</button></div>
+          <div class="quick-grid">
+            <button class="quick" data-sport="Fútbol"><span class="quick-icon">⚽</span>Fútbol</button>
+            <button class="quick" data-sport="Básquet"><span class="quick-icon">🏀</span>Básquet</button>
+            <button class="quick" data-sport="Vóley"><span class="quick-icon">🏐</span>Vóley</button>
+            <button class="quick" data-nav="shop"><span class="quick-icon">🛍️</span>Tienda</button>
+          </div>
+
+          <div class="section"><h3>Tu próxima reserva</h3><button class="link" data-nav="bookings">Ver todas</button></div>
+          <article class="booking-glance">
+            <div class="calendar-icon">📅</div>
+            <div><strong>Cancha La Estrella · Fútbol 7</strong><p>Jueves 3 de julio · 7:00 p. m. · 8 jugadores</p></div>
+            <button class="mini-go" data-nav="bookings" aria-label="Ver reserva">›</button>
+          </article>
+
+          <div class="section"><h3>Canchas que te pueden gustar</h3><button class="link" data-nav="map">Ver mapa</button></div>
+          <div class="venue-list" id="home-venues"></div>
+        </section>
+
+        <section class="page" id="page-explore">
+          <header class="topbar"><div><div class="title">Busca tu cancha</div><div class="subtitle">Disponibilidad actualizada para esta semana.</div></div><button class="icon-btn" data-modal="filters" aria-label="Aplicar filtros">☷</button></header>
+          <div class="search"><span>⌕</span><input id="venue-search" type="search" placeholder="Nombre, zona o deporte..." aria-label="Buscar cancha" /></div>
+          <div class="section" style="margin-top:17px"><h3>Deportes</h3><button class="link" id="clear-filter">Limpiar</button></div>
+          <div class="chips" id="sport-chips">
+            <button class="chip active" data-filter="Todos">Todos</button><button class="chip" data-filter="Fútbol">⚽ Fútbol</button><button class="chip" data-filter="Básquet">🏀 Básquet</button><button class="chip" data-filter="Vóley">🏐 Vóley</button><button class="chip" data-filter="Tenis">🎾 Tenis</button>
+          </div>
+          <div class="section"><h3 id="results-title">Canchas disponibles</h3><span class="subtitle" id="results-count">4 resultados</span></div>
+          <div class="venue-list" id="explore-venues"></div>
+        </section>
+
+        <section class="page" id="page-map">
+          <header class="topbar"><div><div class="title">Mapa deportivo</div><div class="subtitle">Toca un punto para conocer la cancha.</div></div><button class="icon-btn" data-modal="filters">⚙</button></header>
+          <div class="chips"><button class="chip active">Todo</button><button class="chip">Disponibles hoy</button><button class="chip">Con parking</button></div>
+          <div class="map" style="height:500px;margin-top:14px">
+            <div class="map-label">📍 Centro de Puno</div>
+            <button class="marker" style="top:23%;left:24%" data-venue="0"><span>⚽</span></button>
+            <button class="marker orange" style="top:40%;left:67%" data-venue="1"><span>🏀</span></button>
+            <button class="marker blue" style="top:68%;left:71%" data-venue="2"><span>🏐</span></button>
+            <button class="marker purple" style="top:74%;left:29%" data-venue="3"><span>🎾</span></button>
+            <div class="map-tools"><button id="map-plus">＋</button><button id="map-minus">－</button><button id="map-location">⌖</button></div>
+          </div>
+          <div class="map-panel" id="map-panel"><strong>⚽ Cancha La Estrella</strong><p>Fútbol 7 · A 800 m · Desde S/ 65 por hora · Disponible hoy.</p><button class="btn-sm green" style="margin-top:10px" data-venue="0">Ver detalles</button></div>
+        </section>
+
+        <section class="page" id="page-venue">
+          <div class="detail-hero" id="venue-hero">
+            <img id="venue-hero-img" src="" alt="Cancha deportiva" />
+            <div class="overlay-top"><button data-back aria-label="Volver">←</button><button id="venue-fav" aria-label="Añadir a favoritos">♡</button></div>
+            <div class="detail-copy"><h2 id="venue-name">Cancha La Estrella</h2><p id="venue-meta">Fútbol 7 · Av. Floral 124 · A 800 m</p><div class="detail-pills" id="venue-pills"></div></div>
+          </div>
+          <article class="info-card"><h4>Acerca de esta cancha</h4><p id="venue-description"></p></article>
+          <div class="section"><h3>Comodidades</h3></div><div class="amenities" id="venue-amenities"></div>
+          <article class="info-card"><h4>Opiniones de jugadores</h4><div class="review"><strong>⭐ 4.8 · José Mamani</strong><p>Cancha muy cuidada, buena iluminación y fácil reserva desde la app.</p></div><div class="review"><strong>⭐ 5.0 · Andrea Quispe</strong><p>El QR para ingresar fue rápido y el lugar tiene estacionamiento seguro.</p></div></article>
+          <div class="sticky-action"><div class="sticky-price"><b id="venue-price">S/ 65</b><span>por 60 min</span></div><button class="primary" id="start-booking">Elegir horario</button></div>
+        </section>
+
+        <section class="page" id="page-booking-date">
+          <header class="step-head"><button class="step-back" data-back>←</button><div><strong>Reserva tu cancha</strong><span>Paso 1 de 4 · Elige una fecha</span></div></header>
+          <div class="progress"><span style="width:25%"></span></div>
+          <span class="step-label">FECHA DE JUEGO</span><h1 class="booking-title">¿Cuándo quieres jugar?</h1><p class="booking-sub">Selecciona una fecha disponible. Puedes cambiarla antes de pagar.</p>
+          <div class="week-strip" id="week-strip"></div>
+          <div class="calendar-box"><div class="cal-head"><button id="cal-prev">‹</button><strong id="cal-month">Julio 2026</strong><button id="cal-next">›</button></div><div class="calendar-grid" id="calendar-grid"></div></div>
+          <div class="helper"><b>💡</b><span>Las fechas en verde tienen mayor disponibilidad. La app bloquea automáticamente los días ya pasados.</span></div>
+          <div class="sticky-action"><div class="sticky-price"><b id="date-venue-price">S/ 65</b><span id="date-venue-name">Cancha seleccionada</span></div><button class="primary" id="continue-date">Continuar</button></div>
+        </section>
+
+        <section class="page" id="page-booking-time">
+          <header class="step-head"><button class="step-back" data-back>←</button><div><strong>Reserva tu cancha</strong><span>Paso 2 de 4 · Elige un horario</span></div></header>
+          <div class="progress"><span style="width:50%"></span></div>
+          <span class="step-label">HORARIOS</span><h1 class="booking-title">Selecciona la hora</h1><p class="booking-sub" id="time-date-label">Jueves 3 de julio · Cancha La Estrella</p>
+          <div class="time-segment" id="time-segment"><button class="active" data-period="Mañana">Mañana</button><button data-period="Tarde">Tarde</button><button data-period="Noche">Noche</button></div>
+          <div class="time-grid" id="time-grid"></div>
+          <div class="selection-summary"><strong id="selected-slot-text">Aún no seleccionaste un horario</strong><p>Los horarios tachados ya están reservados. Elige uno disponible para continuar.</p></div>
+          <div class="sticky-action"><div class="sticky-price"><b id="time-total">S/ 65</b><span>60 minutos</span></div><button class="primary" id="continue-time">Continuar</button></div>
+        </section>
+
+        <section class="page" id="page-booking-extras">
+          <header class="step-head"><button class="step-back" data-back>←</button><div><strong>Reserva tu cancha</strong><span>Paso 3 de 4 · Personaliza tu partido</span></div></header>
+          <div class="progress"><span style="width:75%"></span></div>
+          <span class="step-label">EXTRAS OPCIONALES</span><h1 class="booking-title">Haz que todo esté listo.</h1><p class="booking-sub">Añade servicios para no preocuparte por nada al llegar.</p>
+          <div class="extra-list" id="extra-list"></div>
+          <div class="selection-summary"><strong id="extras-total">Sin extras seleccionados</strong><p>Podrás revisar el total antes de realizar el pago.</p></div>
+          <div class="sticky-action"><div class="sticky-price"><b id="extras-price">S/ 65</b><span>Total estimado</span></div><button class="primary" id="continue-extras">Revisar reserva</button></div>
+        </section>
+
+        <section class="page" id="page-booking-review">
+          <header class="step-head"><button class="step-back" data-back>←</button><div><strong>Confirma tu reserva</strong><span>Paso 4 de 4 · Revisa los detalles</span></div></header>
+          <div class="progress"><span style="width:100%"></span></div>
+          <span class="step-label">RESUMEN</span><h1 class="booking-title">Todo se ve bien.</h1><p class="booking-sub">Revisa tus datos. El horario se mantiene bloqueado por 10 minutos.</p>
+          <div class="summary-card" id="booking-summary"></div>
+          <div class="promo-input"><input id="promo-code" placeholder="Código promocional" /><button id="apply-promo">Aplicar</button></div>
+          <div class="helper"><b>🔒</b><span>El pago es seguro. Recibirás un QR único para el ingreso después de confirmar.</span></div>
+          <div class="sticky-action"><div class="sticky-price"><b id="review-total">S/ 65</b><span>Total a pagar</span></div><button class="primary" id="continue-payment">Ir a pagar</button></div>
+        </section>
+
+        <section class="page" id="page-payment">
+          <header class="step-head"><button class="step-back" data-back>←</button><div><strong>Pago seguro</strong><span>Elige tu forma de pago</span></div></header>
+          <span class="step-label">PAGO</span><h1 class="booking-title">¿Cómo deseas pagar?</h1><p class="booking-sub">Selecciona un método. Verás una confirmación antes de procesarlo.</p>
+          <button class="pay-method selected" data-pay="Yape"><div class="pay-logo">Yape</div><div><strong>Yape</strong><span>Pago rápido desde tu celular</span></div><i class="radio"></i></button>
+          <button class="pay-method" data-pay="Plin"><div class="pay-logo">Plin</div><div><strong>Plin</strong><span>Confirma con tu número móvil</span></div><i class="radio"></i></button>
+          <button class="pay-method" data-pay="Tarjeta"><div class="pay-logo">VISA</div><div><strong>Tarjeta de débito o crédito</strong><span>Visa, Mastercard o American Express</span></div><i class="radio"></i></button>
+          <div class="form-card" id="payment-form"><label class="field-label">Número de celular Yape</label><input class="field" id="pay-phone" placeholder="999 999 999" inputmode="numeric" value="999 123 456" /><div class="secure"><b>🔐</b><span>La reserva será confirmada inmediatamente después de validar el pago.</span></div></div>
+          <div class="sticky-action"><div class="sticky-price"><b id="payment-total">S/ 65</b><span>Total de reserva</span></div><button class="primary" id="pay-booking">Pagar ahora</button></div>
+        </section>
+
+        <section class="page" id="page-success">
+          <div class="success"><div class="success-badge">✓</div><h1>¡Reserva confirmada!</h1><p>Tu cancha está asegurada. Presenta tu código QR al llegar al establecimiento.</p><article class="ticket" id="success-ticket"></article><div class="share-row"><button id="share-ticket">↗ Compartir</button><button id="save-calendar">＋ Calendario</button></div><button class="primary" style="width:100%;margin-top:13px" data-nav="bookings">Ver mis reservas</button></div>
+        </section>
+
+        <section class="page" id="page-shop">
+          <header class="topbar"><div><div class="title">Tienda deportiva</div><div class="subtitle">Equipo y accesorios, entregados en la cancha.</div></div><button class="icon-btn" data-nav="cart" aria-label="Abrir carrito">🛒<i class="dot hidden" id="cart-dot"></i></button></header>
+          <div class="shop-hero"><img src="https://images.unsplash.com/photo-1597630907602-356d09900200?auto=format&fit=crop&w=1300&q=82" alt="Jugador con balón de fútbol" /><div class="shop-copy"><span>OFERTAS PARA TU PARTIDO</span><h2>Llega con todo listo.</h2><p>Compra hoy y recoge tus productos junto con tu reserva.</p></div></div>
+          <div class="section"><h3>Explora por categoría</h3><button class="link" id="shop-all">Ver todo</button></div>
+          <div class="chips" id="shop-chips"><button class="chip active" data-shop-filter="Todos">Todos</button><button class="chip" data-shop-filter="Balones">Balones</button><button class="chip" data-shop-filter="Ropa">Ropa</button><button class="chip" data-shop-filter="Accesorios">Accesorios</button></div>
+          <div class="section"><h3 id="shop-title">Lo más buscado</h3><button class="link" data-nav="cart">Carrito</button></div>
+          <div class="product-grid" id="product-grid"></div>
+        </section>
+
+        <section class="page" id="page-product">
+          <div class="product-detail-img"><img id="product-detail-img" src="" alt="Producto deportivo" /><button class="back" data-back>←</button><button class="fav" id="product-fav">♡</button></div>
+          <div class="thumb-row" id="product-thumbs"></div>
+          <div class="prod-detail"><h1 id="product-name">Balón Pro Training</h1><div class="stars" id="product-stars">★★★★★ 4.9 · 82 reseñas</div><p id="product-desc"></p><div class="section"><h3>Talla</h3><button class="link" id="size-guide">Guía de tallas</button></div><div class="size-row" id="size-row"></div><div class="quantity"><button id="qty-minus">−</button><b id="product-qty">1</b><button id="qty-plus">＋</button><span class="subtitle" style="margin:0 0 0 4px">Stock disponible</span></div></div>
+          <div class="product-sticky"><strong id="product-price">S/ 69</strong><button class="primary" id="add-product">Añadir al carrito</button></div>
+        </section>
+
+        <section class="page" id="page-cart">
+          <header class="topbar"><div><div class="title">Tu carrito</div><div class="subtitle">Productos listos para tu próximo partido.</div></div><button class="icon-btn" data-nav="shop">🛍️</button></header>
+          <div id="cart-list"></div><div class="cart-total" id="cart-total"></div><button class="primary" style="width:100%;margin-top:12px" id="checkout-products">Continuar compra</button><p class="subtitle" style="text-align:center;margin-top:10px">Entrega o recojo coordinado con el negocio deportivo.</p>
+        </section>
+
+        <section class="page" id="page-bookings">
+          <header class="topbar"><div><div class="title">Mis reservas</div><div class="subtitle">Controla tus partidos y entradas QR.</div></div><button class="icon-btn" data-modal="notifications">🔔</button></header>
+          <div class="chips"><button class="chip active" data-booking-filter="upcoming">Próximas</button><button class="chip" data-booking-filter="past">Historial</button></div>
+          <div class="section"><h3 id="booking-list-title">Próximas reservas</h3><button class="link" data-nav="explore">Nueva reserva</button></div><div id="booking-list"></div>
+        </section>
+
+        <section class="page" id="page-profile">
+          <header class="topbar"><div><div class="title">Mi perfil</div><div class="subtitle">Tu actividad y beneficios en CanchaGo.</div></div><button class="icon-btn" data-modal="edit-profile">✎</button></header>
+          <article class="profile"><div class="avatar">D</div><h2>Daniel Apaza</h2><p>Jugador activo · Puno, Perú</p><span class="pill">⚡ 1,280 puntos</span><span class="pill">⭐ 4.9 jugador confiable</span><div class="stats"><div class="stat"><strong id="stat-bookings">07</strong><span>Reservas</span></div><div class="stat"><strong>12</strong><span>Partidos</span></div><div class="stat"><strong>03</strong><span>Favoritos</span></div></div></article>
+          <div class="section"><h3>Mi cuenta</h3></div><div class="menu"><button data-nav="bookings"><span class="menu-icon">🎟️</span><div><strong>Mis reservas</strong><span>QR, horarios e historial</span></div><i class="arrow">›</i></button><button data-nav="owner"><span class="menu-icon">🏟️</span><div><strong>Modo negocio</strong><span>Administra canchas, ventas y horarios</span></div><i class="arrow">›</i></button><button data-modal="help"><span class="menu-icon">💬</span><div><strong>Ayuda y soporte</strong><span>Preguntas frecuentes y contacto</span></div><i class="arrow">›</i></button><button id="logout"><span class="menu-icon">↪</span><div><strong>Cerrar sesión</strong><span>Volver a la pantalla inicial</span></div><i class="arrow">›</i></button></div>
+        </section>
+
+        <section class="page" id="page-owner">
+          <header class="topbar"><div><div class="title">Modo negocio</div><div class="subtitle">Panel de Cancha La Estrella.</div></div><button class="icon-btn" data-nav="profile">☺</button></header>
+          <article class="owner-hero"><small>PANEL DEL NEGOCIO</small><h2>Hoy tu cancha está rindiendo bien.</h2><p>Revisa disponibilidad, reservas, ventas de tienda e ingresos desde un solo lugar.</p><div class="owner-stats"><div class="owner-stat"><strong>S/ 1,240</strong><span>Ingresos de hoy</span></div><div class="owner-stat"><strong>08</strong><span>Reservas confirmadas</span></div></div></article>
+          <div class="section"><h3>Ingresos semanales</h3><button class="link">Reporte</button></div><div class="chart"><div class="bar" style="height:48%"><small>Lun</small></div><div class="bar" style="height:70%"><small>Mar</small></div><div class="bar" style="height:55%"><small>Mié</small></div><div class="bar" style="height:86%"><small>Jue</small></div><div class="bar" style="height:64%"><small>Vie</small></div><div class="bar" style="height:93%"><small>Sáb</small></div><div class="bar" style="height:58%"><small>Dom</small></div></div>
+          <div class="section"><h3>Gestión rápida</h3></div><div class="owner-list"><div class="owner-row"><div class="owner-icon">📅</div><div><strong>Horarios de hoy</strong><span>12 bloques disponibles · 4 ocupados</span></div><button class="toggle on" data-toggle><i></i></button></div><div class="owner-row"><div class="owner-icon">🛒</div><div><strong>Tienda y stock</strong><span>8 productos con stock bajo</span></div><b>›</b></div><div class="owner-row"><div class="owner-icon">💬</div><div><strong>Mensajes de jugadores</strong><span>3 consultas pendientes</span></div><b>›</b></div><div class="owner-row"><div class="owner-icon">🎟️</div><div><strong>Validar QR de ingreso</strong><span>Escanea la reserva del jugador</span></div><button class="btn-sm green" id="validate-qr">Abrir</button></div></div>
+        </section>
+
+        <button class="fab" id="fab" data-nav="explore" aria-label="Buscar cancha">⌕</button>
+        <nav class="bottom-nav" aria-label="Navegación principal"><button class="nav active" data-nav="home"><span class="ni">⌂</span>Inicio</button><button class="nav" data-nav="explore"><span class="ni">⌕</span>Buscar</button><button class="nav" data-nav="bookings"><span class="ni">◫</span>Reservas</button><button class="nav" data-nav="shop"><span class="ni">▱</span>Tienda</button><button class="nav" data-nav="profile"><span class="ni">☺</span>Perfil</button></nav>
+        <div class="modal-cover" id="modal-cover"><div class="modal" id="modal"></div></div><div class="toast" id="toast"></div>
+
+        <section class="onboarding" id="onboarding"><div class="brand"><div class="brand-mark">⚡</div>CanchaGo</div><div class="intro-visual"><div class="orb"></div><div class="sport-ball">⚽</div><div class="float one"><b>📅</b><span>Reserva en<br>segundos</span></div><div class="float two"><b>🎟️</b><span>Ingresa con<br>tu QR</span></div></div><div><div class="dots"><i class="active"></i><i></i><i></i></div><h1>Tu partido empieza aquí.</h1><p>Encuentra canchas, elige horarios reales, paga de forma segura y compra lo que te falta sin salir de la app.</p><button class="enter" id="intro-start">Comenzar</button></div></section>
+        <section class="login" id="login"><div class="brand"><div class="brand-mark">⚡</div>CanchaGo</div><h1>Hola, qué bueno verte.</h1><p>Ingresa para guardar tus reservas, usar tus puntos y administrar tus equipos.</p><div class="stack"><input class="field" type="email" value="daniel@unap.edu.pe" placeholder="Correo electrónico" /><input class="field" type="password" value="12345678" placeholder="Contraseña" /><button class="primary" style="width:100%" id="login-btn">Ingresar a CanchaGo</button><div class="divider">o continúa con</div><button class="secondary" id="google-btn">🔵 &nbsp; Google</button><button class="secondary" id="guest-btn">Entrar como invitado</button></div></section>
+      </main>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const IMG = {
+    stadium: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1500&q=82',
+    goalkeeper: 'https://images.unsplash.com/photo-1597630907602-356d09900200?auto=format&fit=crop&w=1200&q=82',
+    court: 'https://images.unsplash.com/photo-1679083498510-273bd463ca0d?auto=format&fit=crop&w=1200&q=82',
+    player: 'https://images.unsplash.com/photo-1693683223409-4d946f3d458e?auto=format&fit=crop&w=1200&q=82',
+    cleats: 'https://images.unsplash.com/photo-1684355414454-ed132f6c41cd?auto=format&fit=crop&w=1000&q=82',
+    balls: 'https://images.unsplash.com/photo-1608508136365-89375aa78e0c?auto=format&fit=crop&w=1000&q=82',
+    water: 'https://images.unsplash.com/photo-1700506844206-ec2f9e2a65cd?auto=format&fit=crop&w=1000&q=82'
+  };
+
+  const venues = [
+    {id:0,name:'Cancha La Estrella',sport:'Fútbol',type:'Fútbol 7',place:'Av. Floral 124 · 800 m',price:65,rating:'4.8',image:IMG.stadium,badge:'Disponible hoy',features:['Césped sintético','Iluminación','Parking'],description:'Cancha de fútbol 7 con césped sintético renovado, iluminación LED y vestidores. Ideal para partidos entre amigos, ligas y entrenamientos nocturnos.',amenities:['💡 Iluminación','🚿 Vestidores','🅿️ Parking','🥤 Cafetería','📶 Wi‑Fi','🛡️ Seguridad']},
+    {id:1,name:'Arena Puno Basket',sport:'Básquet',type:'Básquet',place:'Jr. Tacna 610 · 1.4 km',price:55,rating:'4.7',image:IMG.court,badge:'2 horarios libres',features:['Techado','Tablero pro','Duchas'],description:'Cancha techada para básquet con tablero profesional, graderías pequeñas y superficie de alto agarre. Reserva por hora para entrenar o jugar con tu equipo.',amenities:['🏀 Tablero pro','🏟️ Techado','🚿 Duchas','🅿️ Parking','🎵 Sonido','🛡️ Seguridad']},
+    {id:2,name:'Vóley Altiplano',sport:'Vóley',type:'Vóley',place:'Av. El Sol 451 · 2.0 km',price:48,rating:'4.9',image:IMG.player,badge:'Oferta de tarde',features:['Red profesional','Techado','Camerinos'],description:'Espacio techado y cómodo para vóley recreativo o competitivo. Cuenta con red regulable, camerinos y zona de hidratación para jugadores.',amenities:['🏐 Red profesional','🏟️ Techado','🚿 Camerinos','🥤 Hidratación','📶 Wi‑Fi','🛡️ Seguridad']},
+    {id:3,name:'Club Tenis Lago',sport:'Tenis',type:'Tenis',place:'Jr. Lima 299 · 2.7 km',price:72,rating:'4.6',image:IMG.goalkeeper,badge:'Fin de semana',features:['Arcilla','Profesor','Tienda'],description:'Cancha de tenis con superficie de arcilla, zona de descanso y tienda de accesorios. También puedes añadir entrenador para una sesión guiada.',amenities:['🎾 Arcilla','👟 Tienda','👨‍🏫 Profesor','🅿️ Parking','🥤 Cafetería','🛡️ Seguridad']}
+  ];
+
+  const products = [
+    {id:1,name:'Balón Pro Training',category:'Balones',price:69,old:89,image:IMG.balls,desc:'Balón resistente para entrenamientos y partidos recreativos. Superficie texturizada para mejor control.',sizes:['N° 4','N° 5']},
+    {id:2,name:'Chimpunes Velocity',category:'Ropa',price:159,old:189,image:IMG.cleats,desc:'Chimpunes ligeros con agarre para césped sintético y comodidad durante todo el partido.',sizes:['39','40','41','42']},
+    {id:3,name:'Botella Sport 700 ml',category:'Accesorios',price:24,old:0,image:IMG.water,desc:'Botella reutilizable para mantener tu hidratación durante entrenamientos y partidos.',sizes:['700 ml']},
+    {id:4,name:'Camiseta Active Naranja',category:'Ropa',price:59,old:75,image:IMG.player,desc:'Camiseta deportiva de secado rápido, cómoda y lista para personalizar con tu dorsal.',sizes:['S','M','L','XL']},
+    {id:5,name:'Balón Basket Street',category:'Balones',price:75,old:95,image:IMG.court,desc:'Balón de básquet para interior o exterior, con gran agarre y alta durabilidad.',sizes:['Talla única']},
+    {id:6,name:'Pack Partido',category:'Accesorios',price:36,old:48,image:IMG.goalkeeper,desc:'Pack con cinta de capitán, silbato y mini botellas para llevar a cualquier cancha.',sizes:['Única']}
+  ];
+
+  const extras = [
+    {id:'ball',icon:'⚽',name:'Balón oficial',detail:'Balón listo y calibrado para el partido.',price:12},
+    {id:'referee',icon:'🧑‍⚖️',name:'Árbitro',detail:'Árbitro para tu encuentro de 60 minutos.',price:35},
+    {id:'water',icon:'💧',name:'Pack de hidratación',detail:'8 botellas frías para tu equipo.',price:16},
+    {id:'photo',icon:'📸',name:'Fotos del partido',detail:'Galería digital de los mejores momentos.',price:28}
+  ];
+
+  const app = document.getElementById('app');
+  const toast = document.getElementById('toast');
+  const modalCover = document.getElementById('modal-cover');
+  const modal = document.getElementById('modal');
+  let pageHistory = ['home'];
+  let currentPage = 'home';
+  let currentVenue = venues[0];
+  let sportFilter = 'Todos';
+  let shopFilter = 'Todos';
+  let selectedDate = {label:'Jue', day:3, month:'Julio', full:'Jueves 3 de julio'};
+  let selectedTime = null;
+  let selectedPeriod = 'Mañana';
+  let selectedExtras = [];
+  let payment = 'Yape';
+  let promoDiscount = 0;
+  let currentProduct = products[0];
+  let productQty = 1;
+  let cart = [];
+  let savedVenues = new Set();
+  let bookingFilter = 'upcoming';
+  let bookings = [
+    {id:'CG-7J8K2',name:'Cancha La Estrella',sport:'Fútbol 7',date:'Jueves 3 de julio',time:'7:00 p. m.',status:'Confirmada',price:65,upcoming:true,icon:'⚽'},
+    {id:'CG-1Q4Z9',name:'Arena Puno Basket',sport:'Básquet',date:'Sábado 14 de junio',time:'5:00 p. m.',status:'Finalizada',price:55,upcoming:false,icon:'🏀'}
+  ];
+
+  function esc(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+  function money(value){return `S/ ${Number(value).toFixed(2).replace('.00','')}`;}
+  function bookingTotal(){return currentVenue.price + selectedExtras.reduce((sum,x)=>sum+x.price,0) - promoDiscount;}
+  function showToast(message){toast.textContent=message;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2600);}
+  function navTo(name, remember=true){
+    const target=document.getElementById(`page-${name}`); if(!target)return;
+    if(remember && currentPage!==name) pageHistory.push(name);
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); target.classList.add('active');target.scrollTop=0;currentPage=name;
+    document.querySelectorAll('.nav').forEach(btn=>btn.classList.toggle('active',btn.dataset.nav===name));
+    if(!['home','explore','bookings','shop','profile'].includes(name))document.querySelectorAll('.nav').forEach(btn=>btn.classList.remove('active'));
+    document.getElementById('fab').classList.toggle('hide',!['home','explore','map'].includes(name));
+    if(name==='home')renderHome(); if(name==='explore')renderExplore(); if(name==='map')updateMapPanel(0); if(name==='venue')renderVenue();
+    if(name==='booking-date')renderDate(); if(name==='booking-time')renderTimes(); if(name==='booking-extras')renderExtras(); if(name==='booking-review')renderReview(); if(name==='payment')renderPayment();
+    if(name==='shop')renderShop(); if(name==='product')renderProduct(); if(name==='cart')renderCart(); if(name==='bookings')renderBookings();
+    if(name==='profile')document.getElementById('stat-bookings').textContent=String(bookings.length).padStart(2,'0');
+  }
+  function goBack(){ if(pageHistory.length>1){pageHistory.pop();navTo(pageHistory[pageHistory.length-1],false);}else navTo('home',false); }
+
+  function venueCard(v){
+    const saved=savedVenues.has(v.id);
+    return `<article class="venue-card"><div class="venue-cover"><img src="${v.image}" alt="${esc(v.name)}"/><span class="venue-badge">${esc(v.badge)}</span><button class="fav" data-fav-venue="${v.id}" aria-label="Guardar cancha">${saved?'♥':'♡'}</button></div><div class="venue-body"><div class="venue-title-row"><div><h4>${esc(v.name)}</h4><p>${esc(v.type)} · ${esc(v.place)}</p></div><span class="rating">★ ${esc(v.rating)}</span></div><div class="features">${v.features.map(f=>`<span class="feature">${esc(f)}</span>`).join('')}</div><div class="venue-footer"><div class="price">${money(v.price)} <span>/ hora</span></div><button class="btn-sm green" data-venue="${v.id}">Ver cancha</button></div></div></article>`;
+  }
+  function renderHome(){document.getElementById('home-venues').innerHTML=venues.slice(0,2).map(venueCard).join('');}
+  function renderExplore(){
+    const term=document.getElementById('venue-search').value.trim().toLowerCase();
+    const filtered=venues.filter(v=>(sportFilter==='Todos'||v.sport===sportFilter)&&`${v.name} ${v.sport} ${v.place}`.toLowerCase().includes(term));
+    document.getElementById('explore-venues').innerHTML=filtered.length?filtered.map(venueCard).join(''):`<div class="empty">No encontramos canchas con esos filtros.<br><br>Prueba otro deporte, zona o limpia la búsqueda.</div>`;
+    document.getElementById('results-count').textContent=`${filtered.length} resultado${filtered.length===1?'':'s'}`;
+    document.getElementById('results-title').textContent=sportFilter==='Todos'?'Canchas disponibles':`${sportFilter} disponible`;
+  }
+  function setVenue(id){currentVenue=venues.find(v=>v.id===Number(id))||venues[0];selectedTime=null;selectedExtras=[];promoDiscount=0;navTo('venue');}
+  function renderVenue(){
+    document.getElementById('venue-hero-img').src=currentVenue.image;document.getElementById('venue-hero-img').alt=currentVenue.name;document.getElementById('venue-name').textContent=currentVenue.name;document.getElementById('venue-meta').textContent=`${currentVenue.type} · ${currentVenue.place}`;document.getElementById('venue-price').textContent=money(currentVenue.price);document.getElementById('venue-description').textContent=currentVenue.description;document.getElementById('venue-pills').innerHTML=currentVenue.features.map(x=>`<span>${x}</span>`).join('');document.getElementById('venue-amenities').innerHTML=currentVenue.amenities.map(a=>{const parts=a.split(' ');return `<div class="amenity"><span>${parts.shift()}</span>${parts.join(' ')}</div>`}).join('');document.getElementById('venue-fav').textContent=savedVenues.has(currentVenue.id)?'♥':'♡';
+  }
+  function updateMapPanel(id){const v=venues[id];document.getElementById('map-panel').innerHTML=`<strong>${v.sport==='Fútbol'?'⚽':v.sport==='Básquet'?'🏀':v.sport==='Vóley'?'🏐':'🎾'} ${esc(v.name)}</strong><p>${esc(v.type)} · ${esc(v.place)} · Desde ${money(v.price)} por hora · ${esc(v.badge)}.</p><button class="btn-sm green" style="margin-top:10px" data-venue="${v.id}">Ver detalles</button>`;}
+
+  function renderDate(){
+    document.getElementById('date-venue-price').textContent=money(currentVenue.price);document.getElementById('date-venue-name').textContent=currentVenue.name;
+    const days=[['Lun',30,'Junio'],['Mar',1,'Julio'],['Mié',2,'Julio'],['Jue',3,'Julio'],['Vie',4,'Julio'],['Sáb',5,'Julio'],['Dom',6,'Julio']];
+    document.getElementById('week-strip').innerHTML=days.map(d=>`<button class="day-card ${selectedDate.day===d[1]&&selectedDate.month===d[2]?'active':''}" data-date-day="${d[1]}" data-date-month="${d[2]}" data-date-label="${d[0]}"><span>${d[0]}</span><b>${d[1]}</b><span>${d[2].slice(0,3)}</span></button>`).join('');
+    buildCalendar();
+  }
+  function buildCalendar(){
+    const names=['L','M','X','J','V','S','D']; const days=[];for(let i=1;i<=31;i++)days.push(i); const offset=2;
+    document.getElementById('calendar-grid').innerHTML=names.map(n=>`<div class="dow">${n}</div>`).join('')+Array(offset).fill('<span></span>').join('')+days.map(d=>{const disabled=d<2;const cls=`${d===3?'today':''} ${selectedDate.day===d&&selectedDate.month==='Julio'?'selected':''} ${disabled?'disabled':''}`;return `<button class="${cls}" data-calendar-day="${d}">${d}</button>`}).join('');
+  }
+  function chooseDate(day,month='Julio',label){const fullNames={Lun:'Lunes',Mar:'Martes',Mié:'Miércoles',Jue:'Jueves',Vie:'Viernes',Sáb:'Sábado',Dom:'Domingo'};const fallbackShort=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'][new Date(2026,6,day).getDay()];const short=label||fallbackShort;selectedDate={label:short,day:Number(day),month,full:`${fullNames[short]||['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][new Date(2026,6,day).getDay()]} ${day} de ${month.toLowerCase()}`};selectedTime=null;renderDate();showToast(`Fecha seleccionada: ${selectedDate.full}`);}
+  function periodSlots(period){return {Mañana:['8:00 a. m.','9:00 a. m.','10:00 a. m.','11:00 a. m.'],Tarde:['12:00 p. m.','1:00 p. m.','2:00 p. m.','3:00 p. m.','4:00 p. m.','5:00 p. m.'],Noche:['6:00 p. m.','7:00 p. m.','8:00 p. m.','9:00 p. m.','10:00 p. m.']}[period];}
+  function renderTimes(){
+    document.getElementById('time-date-label').textContent=`${selectedDate.full} · ${currentVenue.name}`;document.querySelectorAll('#time-segment button').forEach(b=>b.classList.toggle('active',b.dataset.period===selectedPeriod));
+    const unavailable=selectedPeriod==='Noche'?['8:00 p. m.','10:00 p. m.']:selectedPeriod==='Tarde'?['1:00 p. m.','4:00 p. m.']:['9:00 a. m.'];
+    document.getElementById('time-grid').innerHTML=periodSlots(selectedPeriod).map(slot=>`<button class="time ${selectedTime===slot?'selected':''} ${unavailable.includes(slot)?'unavailable':''}" data-time="${slot}">${slot}<small>${unavailable.includes(slot)?'Ocupado':'60 min'}</small></button>`).join('');
+    document.getElementById('selected-slot-text').textContent=selectedTime?`✓ ${selectedDate.full} a las ${selectedTime}`:'Aún no seleccionaste un horario';document.getElementById('time-total').textContent=money(currentVenue.price);
+  }
+  function renderExtras(){
+    document.getElementById('extra-list').innerHTML=extras.map(e=>`<button class="extra ${selectedExtras.some(x=>x.id===e.id)?'selected':''}" data-extra="${e.id}"><span class="extra-icon">${e.icon}</span><div><strong>${e.name} · +${money(e.price)}</strong><span>${e.detail}</span></div><i class="check">${selectedExtras.some(x=>x.id===e.id)?'✓':''}</i></button>`).join('');
+    const extraValue=selectedExtras.reduce((s,x)=>s+x.price,0);document.getElementById('extras-total').textContent=extraValue?`${selectedExtras.length} extra${selectedExtras.length>1?'s':''} seleccionado${selectedExtras.length>1?'s':''} · +${money(extraValue)}`:'Sin extras seleccionados';document.getElementById('extras-price').textContent=money(bookingTotal());
+  }
+  function renderReview(){
+    document.getElementById('booking-summary').innerHTML=`<div class="summary-top"><div class="summary-img"><img src="${currentVenue.image}" alt="${esc(currentVenue.name)}"/></div><div><strong>${esc(currentVenue.name)}</strong><p>${esc(currentVenue.type)} · ${esc(currentVenue.place)}</p></div></div><div class="summary-row"><span>Fecha y horario</span><strong>${esc(selectedDate.full)}<br>${esc(selectedTime||'Sin horario')}</strong></div><div class="summary-row"><span>Duración</span><strong>60 minutos</strong></div><div class="summary-row"><span>Cancha</span><strong>${money(currentVenue.price)}</strong></div>${selectedExtras.map(e=>`<div class="summary-row"><span>${esc(e.name)}</span><strong>+${money(e.price)}</strong></div>`).join('')}${promoDiscount?`<div class="summary-row"><span>Descuento CANCHAGO10</span><strong>−${money(promoDiscount)}</strong></div>`:''}<div class="summary-row total"><span>Total a pagar</span><b>${money(bookingTotal())}</b></div>`;document.getElementById('review-total').textContent=money(bookingTotal());
+  }
+  function renderPayment(){document.getElementById('payment-total').textContent=money(bookingTotal());document.querySelectorAll('.pay-method').forEach(m=>m.classList.toggle('selected',m.dataset.pay===payment));const form=document.getElementById('payment-form');if(payment==='Tarjeta')form.innerHTML=`<label class="field-label">Número de tarjeta</label><input class="field" id="card-number" placeholder="0000 0000 0000 0000" value="4111 1111 1111 1111" inputmode="numeric"/><div class="field-row"><div><label class="field-label">Vencimiento</label><input class="field" placeholder="MM/AA" value="12/29"/></div><div><label class="field-label">CVV</label><input class="field" placeholder="123" value="123" inputmode="numeric"/></div></div><div class="secure"><b>🔐</b><span>Usamos cifrado para proteger tu información.</span></div>`;else form.innerHTML=`<label class="field-label">Número de celular ${payment}</label><input class="field" id="pay-phone" placeholder="999 999 999" inputmode="numeric" value="999 123 456"/><div class="secure"><b>🔐</b><span>La reserva será confirmada inmediatamente después de validar el pago.</span></div>`;}
+  function renderSuccess(){const b=bookings.find(x=>x.id==='CG-'+lastBookingSuffix);if(!b)return;document.getElementById('success-ticket').innerHTML=`<div class="ticket-top"><div class="ticket-logo">${b.icon}</div><div><strong>${esc(b.name)}</strong><span>${esc(b.sport)} · ${esc(b.date)}</span></div></div><div class="ticket-cut"></div><div class="ticket-bottom"><div class="qr"></div><div class="ticket-meta"><div><span>Horario</span><b>${esc(b.time)}</b></div><div><span>Código</span><b>${esc(b.id)}</b></div><div><span>Estado</span><b style="color:var(--green-2)">Confirmada</b></div></div></div>`;}
+  let lastBookingSuffix='';
+
+  function renderShop(){
+    const filtered=products.filter(p=>shopFilter==='Todos'||p.category===shopFilter);document.getElementById('product-grid').innerHTML=filtered.map(p=>`<article class="product"><button class="product-img" data-product="${p.id}"><img src="${p.image}" alt="${esc(p.name)}"/>${p.old?'<span class="sale">OFERTA</span>':''}</button><div class="product-body"><h4>${esc(p.name)}</h4><p>${esc(p.category)} · En stock</p><div class="product-foot"><div class="product-price">${money(p.price)} ${p.old?`<span>${money(p.old)}</span>`:''}</div><button class="add" data-add="${p.id}" aria-label="Añadir ${esc(p.name)}">＋</button></div></div></article>`).join('');
+    document.querySelectorAll('#shop-chips .chip').forEach(c=>c.classList.toggle('active',c.dataset.shopFilter===shopFilter));
+    document.getElementById('shop-title').textContent=shopFilter==='Todos'?'Lo más buscado':shopFilter;
+    updateCartDot();
+  }
+  function setProduct(id){currentProduct=products.find(p=>p.id===Number(id))||products[0];productQty=1;navTo('product');}
+  function renderProduct(){document.getElementById('product-detail-img').src=currentProduct.image;document.getElementById('product-detail-img').alt=currentProduct.name;document.getElementById('product-name').textContent=currentProduct.name;document.getElementById('product-desc').textContent=currentProduct.desc;document.getElementById('product-price').textContent=money(currentProduct.price);document.getElementById('product-qty').textContent=productQty;document.getElementById('size-row').innerHTML=currentProduct.sizes.map((s,i)=>`<button class="size ${i===0?'active':''}" data-size="${esc(s)}">${esc(s)}</button>`).join('');document.getElementById('product-thumbs').innerHTML=[currentProduct.image,IMG.balls,IMG.cleats].map((s,i)=>`<button class="thumb ${i===0?'active':''}"><img src="${s}" alt="Vista del producto"/></button>`).join('');}
+  function addToCart(id,qty=1){const p=products.find(p=>p.id===Number(id));if(!p)return;const existing=cart.find(x=>x.id===p.id);if(existing)existing.qty+=qty;else cart.push({...p,qty});updateCartDot();showToast(`${p.name} se añadió al carrito.`);}
+  function updateCartDot(){document.getElementById('cart-dot').classList.toggle('hidden',cart.length===0);}
+  function cartAmount(){return cart.reduce((s,x)=>s+x.price*x.qty,0)}
+  function renderCart(){
+    const list=document.getElementById('cart-list');if(!cart.length){list.innerHTML=`<div class="empty">Tu carrito está vacío.<br><br>Explora balones, ropa y accesorios para tener todo listo antes de jugar.</div>`;document.getElementById('cart-total').innerHTML='';document.getElementById('checkout-products').classList.add('hidden');return;}document.getElementById('checkout-products').classList.remove('hidden');
+    list.innerHTML=cart.map(x=>`<article class="cart-item"><div class="cart-thumb"><img src="${x.image}" alt="${esc(x.name)}"/></div><div class="cart-info"><strong>${esc(x.name)}</strong><span>${esc(x.category)} · Entrega en cancha o recojo</span><div class="qty-row"><div class="counter"><button data-cart-minus="${x.id}">−</button><b>${x.qty}</b><button data-cart-plus="${x.id}">＋</button></div><button class="remove" data-cart-remove="${x.id}">Eliminar</button></div></div><div class="cart-price">${money(x.price*x.qty)}</div></article>`).join('');
+    const total=cartAmount();document.getElementById('cart-total').innerHTML=`<div class="line"><span>Subtotal</span><b>${money(total)}</b></div><div class="line"><span>Entrega</span><b>Gratis</b></div><div class="line total"><span>Total</span><b>${money(total)}</b></div>`;updateCartDot();
+  }
+  function renderBookings(){
+    const filtered=bookings.filter(b=>bookingFilter==='upcoming'?b.upcoming:!b.upcoming);document.getElementById('booking-list-title').textContent=bookingFilter==='upcoming'?'Próximas reservas':'Historial de reservas';document.getElementById('booking-list').innerHTML=filtered.length?filtered.map(b=>`<article class="booking-card"><div class="booking-head"><div class="booking-logo">${b.icon}</div><div><strong>${esc(b.name)}</strong><p>${esc(b.sport)} · ${esc(b.date)}</p></div><span class="status-chip ${b.upcoming?'':'past'}">${esc(b.status)}</span></div><div class="booking-detail"><div><span>Horario</span><b>${esc(b.time)}</b></div><div><span>Código</span><b>${esc(b.id)}</b></div><div><span>Total</span><b>${money(b.price)}</b></div></div><div class="booking-actions">${b.upcoming?`<button data-show-qr="${esc(b.id)}">Ver QR de ingreso</button><button data-booking-help="${esc(b.id)}">Ayuda</button>`:`<button data-booking-repeat="${esc(b.id)}">Reservar de nuevo</button><button data-booking-help="${esc(b.id)}">Ver detalle</button>`}</div></article>`).join(''):`<div class="empty">No tienes reservas en esta sección.</div>`;
+  }
+  function openModal(type,data={}){
+    let content=''; const close='<button class="close" data-close-modal>×</button>';
+    if(type==='notifications')content=`<div class="handle"></div><div class="modal-title"><h3>Notificaciones</h3>${close}</div><div class="notice"><div class="notice-icon">⏰</div><div><strong>Tu partido es mañana</strong><p>Cancha La Estrella te espera a las 7:00 p. m. Lleva tu QR listo.</p></div></div><div class="notice"><div class="notice-icon">🏷️</div><div><strong>Oferta de tienda activa</strong><p>Usa CANCHAGO10 y recibe S/ 10 de descuento en tu siguiente reserva.</p></div></div><div class="notice"><div class="notice-icon">⭐</div><div><strong>Ganaste puntos</strong><p>Sumaste 80 puntos por completar tu última reserva.</p></div></div>`;
+    if(type==='filters')content=`<div class="handle"></div><div class="modal-title"><h3>Filtrar canchas</h3>${close}</div><p class="modal-helper">Elige criterios para encontrar una cancha compatible con tu partido.</p><div class="stack"><div><label class="field-label">Rango de distancia</label><select class="field"><option>Hasta 5 km</option><option>Hasta 2 km</option><option>Hasta 10 km</option></select></div><div><label class="field-label">Precio por hora</label><select class="field"><option>Cualquier precio</option><option>Hasta S/ 60</option><option>Hasta S/ 80</option></select></div><div><label class="field-label">Comodidad</label><select class="field"><option>Sin preferencia</option><option>Con parking</option><option>Con iluminación</option><option>Cancha techada</option></select></div><button class="primary" data-close-modal id="apply-filter">Aplicar filtros</button><button class="secondary" data-close-modal>Limpiar filtros</button></div>`;
+    if(type==='qr'){
+      const b=data.booking;content=`<div class="handle"></div><div class="modal-title"><h3>QR de ingreso</h3>${close}</div><p class="modal-helper">Muestra este código al personal de ${esc(b.name)}. Se valida una sola vez al ingresar.</p><div style="display:grid;place-items:center;padding:8px 0 16px"><div class="qr" style="width:190px;height:190px;border-radius:18px"><div></div></div><strong style="font-size:13px;margin-top:13px">${esc(b.id)}</strong><span class="subtitle">${esc(b.date)} · ${esc(b.time)}</span></div><button class="primary" style="width:100%" data-close-modal>Entendido</button>`;
+    }
+    if(type==='help')content=`<div class="handle"></div><div class="modal-title"><h3>Ayuda y soporte</h3>${close}</div><div class="notice"><div class="notice-icon">💬</div><div><strong>¿Necesitas cambiar tu horario?</strong><p>Comunícate con el negocio antes de que falten 3 horas para tu reserva.</p></div></div><div class="notice"><div class="notice-icon">↻</div><div><strong>Cancelaciones</strong><p>La política depende de cada cancha y se muestra antes del pago.</p></div></div><div class="notice"><div class="notice-icon">📞</div><div><strong>Soporte CanchaGo</strong><p>Chat de ayuda disponible todos los días de 8 a. m. a 10 p. m.</p></div></div><button class="primary" style="width:100%;margin-top:13px" id="contact-support">Abrir chat de soporte</button>`;
+    if(type==='edit-profile')content=`<div class="handle"></div><div class="modal-title"><h3>Editar perfil</h3>${close}</div><div class="stack"><div><label class="field-label">Nombre</label><input class="field" value="Daniel Apaza"/></div><div><label class="field-label">Teléfono</label><input class="field" value="999 123 456"/></div><div><label class="field-label">Deporte favorito</label><select class="field"><option>Fútbol</option><option>Básquet</option><option>Vóley</option><option>Tenis</option></select></div><button class="primary" id="save-profile">Guardar cambios</button></div>`;
+    if(type==='owner-qr')content=`<div class="handle"></div><div class="modal-title"><h3>Validar QR</h3>${close}</div><div style="padding:10px 0;text-align:center"><div class="success-badge" style="margin:5px auto 14px;width:72px;height:72px;font-size:31px">▦</div><h3 style="margin:0;font-size:18px">Escáner listo</h3><p class="modal-helper" style="margin-top:7px">Apunta la cámara al código QR del jugador para validar su ingreso.</p><button class="primary" style="width:100%" id="simulate-scan">Simular escaneo</button></div>`;
+    modal.innerHTML=content;modalCover.classList.add('show');
+  }
+  function closeModal(){modalCover.classList.remove('show');}
+
+  document.addEventListener('click',event=>{
+    const nav=event.target.closest('[data-nav]'); if(nav){navTo(nav.dataset.nav);return;}
+    if(event.target.closest('[data-back]')){goBack();return;}
+    const mapMarker=event.target.closest('.marker[data-venue]');if(mapMarker){updateMapPanel(Number(mapMarker.dataset.venue));return;}
+    const venue=event.target.closest('[data-venue]');if(venue){setVenue(venue.dataset.venue);return;}
+    const fav=event.target.closest('[data-fav-venue]');if(fav){const id=Number(fav.dataset.favVenue);savedVenues.has(id)?savedVenues.delete(id):savedVenues.add(id);showToast(savedVenues.has(id)?'Cancha guardada en favoritos.':'Cancha retirada de favoritos.');renderHome();renderExplore();if(currentPage==='venue')renderVenue();return;}
+    const modalBtn=event.target.closest('[data-modal]');if(modalBtn){openModal(modalBtn.dataset.modal);return;}
+    if(event.target.closest('[data-close-modal]')||event.target===modalCover){closeModal();return;}
+    const quickSport=event.target.closest('[data-sport]');if(quickSport){sportFilter=quickSport.dataset.sport;navTo('explore');document.querySelectorAll('#sport-chips .chip').forEach(c=>c.classList.toggle('active',c.dataset.filter===sportFilter));renderExplore();return;}
+    const chip=event.target.closest('#sport-chips .chip');if(chip){sportFilter=chip.dataset.filter;document.querySelectorAll('#sport-chips .chip').forEach(c=>c.classList.toggle('active',c===chip));renderExplore();return;}
+    const shopChip=event.target.closest('#shop-chips .chip');if(shopChip){shopFilter=shopChip.dataset.shopFilter;renderShop();return;}
+    const openProduct=event.target.closest('[data-product]');if(openProduct){setProduct(openProduct.dataset.product);return;}
+    const add=event.target.closest('[data-add]');if(add){addToCart(add.dataset.add);return;}
+    const day=event.target.closest('[data-date-day]');if(day){chooseDate(day.dataset.dateDay,day.dataset.dateMonth,day.dataset.dateLabel);return;}
+    const cal=event.target.closest('[data-calendar-day]');if(cal){chooseDate(cal.dataset.calendarDay);return;}
+    const timePeriod=event.target.closest('#time-segment button');if(timePeriod){selectedPeriod=timePeriod.dataset.period;selectedTime=null;renderTimes();return;}
+    const time=event.target.closest('[data-time]');if(time){selectedTime=time.dataset.time;renderTimes();showToast(`Horario seleccionado: ${selectedTime}`);return;}
+    const extra=event.target.closest('[data-extra]');if(extra){const item=extras.find(x=>x.id===extra.dataset.extra);const exists=selectedExtras.some(x=>x.id===item.id);selectedExtras=exists?selectedExtras.filter(x=>x.id!==item.id):[...selectedExtras,item];renderExtras();return;}
+    if(event.target.closest('#start-booking')){navTo('booking-date');return;}
+    if(event.target.closest('#continue-date')){navTo('booking-time');return;}
+    if(event.target.closest('#continue-time')){if(!selectedTime){showToast('Selecciona un horario disponible para continuar.');return;}navTo('booking-extras');return;}
+    if(event.target.closest('#continue-extras')){navTo('booking-review');return;}
+    if(event.target.closest('#apply-promo')){const code=document.getElementById('promo-code').value.trim().toUpperCase();if(code==='CANCHAGO10'){promoDiscount=10;showToast('Código aplicado: S/ 10 de descuento.');renderReview();}else showToast('Código no válido. Prueba CANCHAGO10.');return;}
+    if(event.target.closest('#continue-payment')){navTo('payment');return;}
+    const pm=event.target.closest('.pay-method');if(pm){payment=pm.dataset.pay;renderPayment();return;}
+    if(event.target.closest('#pay-booking')){
+      const suffix=Math.random().toString(36).slice(2,7).toUpperCase();lastBookingSuffix=suffix;bookings.unshift({id:'CG-'+suffix,name:currentVenue.name,sport:currentVenue.type,date:selectedDate.full,time:selectedTime,status:'Confirmada',price:bookingTotal(),upcoming:true,icon:currentVenue.sport==='Fútbol'?'⚽':currentVenue.sport==='Básquet'?'🏀':currentVenue.sport==='Vóley'?'🏐':'🎾'});renderSuccess();navTo('success');showToast('Pago aprobado y reserva confirmada.');return;}
+    if(event.target.closest('#share-ticket')){showToast('Enlace de reserva copiado (simulación).');return;}
+    if(event.target.closest('#save-calendar')){showToast('Reserva añadida a tu calendario (simulación).');return;}
+    if(event.target.closest('#qty-minus')){productQty=Math.max(1,productQty-1);renderProduct();return;}
+    if(event.target.closest('#qty-plus')){productQty+=1;renderProduct();return;}
+    if(event.target.closest('#add-product')){addToCart(currentProduct.id,productQty);return;}
+    const minus=event.target.closest('[data-cart-minus]');if(minus){const x=cart.find(i=>i.id===Number(minus.dataset.cartMinus));if(x){x.qty=Math.max(1,x.qty-1);renderCart();}return;}
+    const plus=event.target.closest('[data-cart-plus]');if(plus){const x=cart.find(i=>i.id===Number(plus.dataset.cartPlus));if(x){x.qty+=1;renderCart();}return;}
+    const remove=event.target.closest('[data-cart-remove]');if(remove){cart=cart.filter(i=>i.id!==Number(remove.dataset.cartRemove));renderCart();showToast('Producto eliminado del carrito.');return;}
+    if(event.target.closest('#checkout-products')){if(!cart.length){showToast('Añade productos antes de continuar.');return;}showToast('Compra preparada. En una app real continuarías al pago.');return;}
+    const bchip=event.target.closest('[data-booking-filter]');if(bchip){bookingFilter=bchip.dataset.bookingFilter;document.querySelectorAll('[data-booking-filter]').forEach(c=>c.classList.toggle('active',c===bchip));renderBookings();return;}
+    const qr=event.target.closest('[data-show-qr]');if(qr){const b=bookings.find(x=>x.id===qr.dataset.showQr);if(b)openModal('qr',{booking:b});return;}
+    if(event.target.closest('[data-booking-repeat]')){navTo('booking-date');showToast('Selecciona una nueva fecha para reservar otra vez.');return;}
+    if(event.target.closest('[data-booking-help]')){openModal('help');return;}
+    if(event.target.closest('#clear-filter')){sportFilter='Todos';document.getElementById('venue-search').value='';document.querySelectorAll('#sport-chips .chip').forEach(c=>c.classList.toggle('active',c.dataset.filter==='Todos'));renderExplore();return;}
+    if(event.target.closest('#shop-all')){shopFilter='Todos';renderShop();return;}
+    if(event.target.closest('#venue-fav')){savedVenues.has(currentVenue.id)?savedVenues.delete(currentVenue.id):savedVenues.add(currentVenue.id);renderVenue();showToast(savedVenues.has(currentVenue.id)?'Cancha guardada en favoritos.':'Cancha retirada de favoritos.');return;}
+    if(event.target.closest('#size-guide')){showToast('Selecciona tu talla habitual. Se confirma antes del pago.');return;}
+    const size=event.target.closest('.size');if(size){document.querySelectorAll('.size').forEach(s=>s.classList.toggle('active',s===size));return;}
+    if(event.target.closest('#product-fav')){const b=document.getElementById('product-fav');b.textContent=b.textContent==='♡'?'♥':'♡';showToast(b.textContent==='♥'?'Producto guardado.':'Producto retirado de favoritos.');return;}
+    if(event.target.closest('#map-plus')||event.target.closest('#map-minus')||event.target.closest('#map-location')){showToast(event.target.closest('#map-location')?'Ubicación actualizada en el mapa.':'Nivel de zoom actualizado.');return;}
+    if(event.target.closest('[data-toggle]')){event.target.closest('[data-toggle]').classList.toggle('on');showToast('Disponibilidad del horario actualizada.');return;}
+    if(event.target.closest('#validate-qr')){openModal('owner-qr');return;}
+    if(event.target.closest('#simulate-scan')){closeModal();showToast('QR validado: jugador autorizado para ingresar.');return;}
+    if(event.target.closest('#contact-support')){closeModal();showToast('Chat de soporte iniciado (simulación).');return;}
+    if(event.target.closest('#save-profile')){closeModal();showToast('Perfil actualizado correctamente.');return;}
+    if(event.target.closest('#apply-filter')){closeModal();showToast('Filtros aplicados correctamente.');return;}
+    if(event.target.closest('#logout')){document.getElementById('onboarding').style.display='flex';navTo('home',false);showToast('Sesión cerrada.');return;}
+  });
+
+  document.getElementById('venue-search').addEventListener('input',renderExplore);
+  document.getElementById('intro-start').addEventListener('click',()=>{document.getElementById('onboarding').style.display='none';document.getElementById('login').classList.add('show');});
+  ['login-btn','google-btn','guest-btn'].forEach(id=>document.getElementById(id).addEventListener('click',()=>{document.getElementById('login').classList.remove('show');showToast(id==='guest-btn'?'Entraste como invitado.':'¡Bienvenido a CanchaGo!');}));
+  document.getElementById('cal-prev').addEventListener('click',()=>showToast('No puedes seleccionar meses anteriores en este prototipo.'));
+  document.getElementById('cal-next').addEventListener('click',()=>showToast('Agosto estaría disponible en la versión final.'));
+
+  renderHome();renderExplore();renderShop();renderCart();renderBookings();
+})();
+</script>
+</body>
+</html>
