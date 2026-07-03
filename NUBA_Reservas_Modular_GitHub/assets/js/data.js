@@ -7,10 +7,10 @@ window.NUBA_DATA = {
   ],
   products:[
     {id:'p1',name:'Balón Pro Match',category:'Deporte',price:89,image:'https://images.unsplash.com/photo-1614632537423-1e6c2e7e0aab?auto=format&fit=crop&w=800&q=85'},
-    {id:'p2',name:'Camiseta Training',category:'Ropa',price:69,image:'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=85'},
-    {id:'p3',name:'Botella térmica',category:'Accesorios',price:39,image:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=85'},
-    {id:'p4',name:'Rodilleras Active',category:'Deporte',price:54,image:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=85'},
-    {id:'p5',name:'Toalla microfibra',category:'Accesorios',price:29,image:'https://images.unsplash.com/photo-1584863231364-2edc166de576?auto=format&fit=crop&w=800&q=85'},
-    {id:'p6',name:'Bolso Urban Sport',category:'Ropa',price:95,image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=85'}
+    {id:'p2',name:'Rodilleras Active',category:'Deporte',price:54,image:'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=85'},
+    {id:'p3',name:'Toalla microfibra',category:'Deporte',price:29,image:'https://images.unsplash.com/photo-1584863231364-2edc166de576?auto=format&fit=crop&w=800&q=85'},
+    {id:'p4',name:'Kit de cuidado facial',category:'Belleza',price:68,image:'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=85'},
+    {id:'p5',name:'Mascarilla premium',category:'Belleza',price:35,image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=85'},
+    {id:'p6',name:'Esmalte deluxe',category:'Belleza',price:22,image:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=85'}
   ]
 };

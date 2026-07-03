@@ -1,0 +1,13 @@
+/* Estilos específicos del perfil: overlay de cambio de avatar (decorativo) */
+.profile-card{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:14px;text-align:center}
+.avatar-wrap{position:relative;display:inline-block}
+.avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;display:grid;place-items:center;font-weight:900;font-size:28px;box-shadow:var(--shadow)}
+.avatar-edit{position:absolute;right:-6px;bottom:-6px;width:34px;height:34px;border-radius:50%;border:2px solid #fff;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:14px;cursor:pointer;box-shadow:var(--shadow-soft)}
+.avatar-edit:hover{transform:translateY(-2px)}
+.avatar-edit:focus{outline:3px solid rgba(110,92,246,.18);outline-offset:2px}
+
+/* Descripción editable (decorativo) */
+.profile-desc{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.profile-desc #profile-desc{margin:0;font-size:13px;color:var(--muted);max-width:360px}
+.desc-edit{padding:8px 10px;border-radius:12px;background:#fff;border:1px solid var(--line);font-weight:900;font-size:12px;cursor:pointer}
+.desc-edit:hover{transform:translateY(-2px)}
